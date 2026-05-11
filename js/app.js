@@ -84,6 +84,9 @@ function navigateTo(page) {
     if (currentPage === 'leads' && typeof Leads !== 'undefined') {
         Leads.destroy();
     }
+    if (currentPage === 'finance-journal' && typeof FinanceJournal !== 'undefined') {
+        FinanceJournal.destroy();
+    }
 
     currentPage = page;
 

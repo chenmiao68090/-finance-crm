@@ -9,6 +9,18 @@ const Auth = {
         this.bindLoginForm();
         this.bindRegisterForm();
 
+        // 检查本地保存的登录状态
+        const localSession = localStorage.getItem('zhqf_local_session');
+        if (localSession) {
+            try {
+                this.currentUser = JSON.parse(localSession);
+                this.showApp();
+                return;
+            } catch (e) {
+                localStorage.removeItem('zhqf_local_session');
+            }
+        }
+
         try {
             if (!window.supabaseClient) throw new Error('Supabase未连接');
             // 检查当前会话
@@ -100,13 +112,14 @@ const Auth = {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const email = loginForm.querySelector('input[type="email"]').value;
-            const password = loginForm.querySelector('input[type="password"]').value;
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             const errorMsg = loginForm.querySelector('.error-message');
 
             // 本地测试账号
-            if (email === 'admin@zhqf.com' && password === '123456') {
+            if (email === 'chenmiao' && password === '123456') {
                 this.currentUser = { email: email };
+                localStorage.setItem('zhqf_local_session', JSON.stringify(this.currentUser));
                 this.showApp();
                 errorMsg.textContent = '';
                 return;
@@ -144,8 +157,8 @@ const Auth = {
 
         registerBtn.addEventListener('click', async () => {
             const loginForm = document.getElementById('login-form');
-            const email = loginForm.querySelector('input[type="email"]').value;
-            const password = loginForm.querySelector('input[type="password"]').value;
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             const errorMsg = loginForm.querySelector('.error-message');
 
             if (!email || !password) {
@@ -200,6 +213,7 @@ const Auth = {
             } finally {
                 this.hideLoading();
                 this.currentUser = null;
+                localStorage.removeItem('zhqf_local_session');
                 this.showLogin();
             }
         });
