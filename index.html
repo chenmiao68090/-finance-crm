@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浙杭企服</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="login-page" class="login-page">
+        <!-- 左侧品牌区 -->
+        <div class="login-brand">
+            <div class="brand-bg-pattern"></div>
+            <div class="brand-content">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect width="48" height="48" rx="12" fill="rgba(255,255,255,0.15)"/>
+                            <path d="M14 34V14h8c2.2 0 4 .8 5.4 2.2 1.4 1.4 2.1 3.1 2.1 5.1 0 1.5-.4 2.8-1.2 4-.8 1.1-1.8 2-3.1 2.5L30 34h-4.5l-4.2-5.5H18V34h-4zm4-9.5h3.8c1.1 0 2-.3 2.7-1 .7-.7 1-1.5 1-2.5s-.3-1.8-1-2.5c-.7-.7-1.6-1-2.7-1H18v7z" fill="white"/>
+                        </svg>
+                    </div>
+                    <h1 class="brand-title">浙杭企服</h1>
+                </div>
+                <p class="brand-tagline">智能财务管理，驱动业务增长</p>
+                
+                <div class="brand-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L2 7l8 5 8-5-8-5zM2 13l8 5 8-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="feature-text">
+                            <span class="feature-title">云端数据同步</span>
+                            <span class="feature-desc">多设备实时协作，数据永不丢失</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M3 3v14h14M7 10l3 3 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="feature-text">
+                            <span class="feature-title">智能数据分析</span>
+                            <span class="feature-desc">可视化报表，一键掌握经营状况</span>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 6v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="feature-text">
+                            <span class="feature-title">高效流程管理</span>
+                            <span class="feature-desc">客户、合同、发票一站式管理</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="brand-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-text">系统可用率</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">256位</span>
+                        <span class="stat-text">数据加密</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-text">技术支持</span>
+                    </div>
+                </div>
+            </div>
+            <div class="brand-footer">
+                <p>&copy; 2024 浙杭企服 · 安全可靠</p>
+            </div>
+        </div>
+
+        <!-- 右侧登录区 -->
+        <div class="login-form-section">
+            <div class="login-form-container">
+                <div class="form-header">
+                    <h2>欢迎回来</h2>
+                    <p>登录您的账户以继续使用</p>
+                </div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">登录账号</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <path d="M3 4.5h12c.825 0 1.5.675 1.5 1.5v7.5c0 .825-.675 1.5-1.5 1.5H3c-.825 0-1.5-.675-1.5-1.5V6c0-.825.675-1.5 1.5-1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.5 6l-7.5 4.5L1.5 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input id="login-email" type="email" placeholder="请输入邮箱地址" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <rect x="3" y="8.25" width="12" height="8.25" rx="2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5.25 8.25V5.25a3.75 3.75 0 017.5 0v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input id="login-password" type="password" placeholder="请输入密码 (至少6位)" required minlength="6">
+                            <button type="button" class="toggle-password" tabindex="-1">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <path d="M1.5 9s3-6 7.5-6 7.5 6 7.5 6-3 6-7.5 6S1.5 9 1.5 9z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <circle cx="9" cy="9" r="2.25" stroke="currentColor" stroke-width="1.2"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="error-message" id="login-error"></div>
+
+                    <div class="login-actions">
+                        <button type="submit" class="btn-login">
+                            <span class="btn-text">登 录</span>
+                            <svg class="btn-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <path d="M3.75 9h10.5M9.75 4.5L14.25 9l-4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="login-footer">
+                    <p>登录即表示您同意我们的服务条款和隐私政策</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用 -->
+    <div class="app-container" style="display: none;">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="header-logo">
+                    <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+                        <rect width="48" height="48" rx="10" fill="#4f46e5"/>
+                        <path d="M14 34V14h8c2.2 0 4 .8 5.4 2.2 1.4 1.4 2.1 3.1 2.1 5.1 0 1.5-.4 2.8-1.2 4-.8 1.1-1.8 2-3.1 2.5L30 34h-4.5l-4.2-5.5H18V34h-4zm4-9.5h3.8c1.1 0 2-.3 2.7-1 .7-.7 1-1.5 1-2.5s-.3-1.8-1-2.5c-.7-.7-1.6-1-2.7-1H18v7z" fill="white"/>
+                    </svg>
+                    <span class="header-title">浙杭企服</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3.5 17.5c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <span>欢迎使用</span>
+                </div>
+                <button id="logout-btn" class="btn-header-logout">退出</button>
+            </div>
+        </header>
+
+        <!-- 左侧菜单栏 + 右侧内容区 -->
+        <div class="app-body">
+            <!-- 左侧卡片菜单 -->
+            <aside class="side-menu">
+                <a href="#" class="side-menu-card active" data-page="home">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                            <polyline points="9,22 9,12 15,12 15,22"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">首页</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="cockpit">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #4f46e5, #6366f1);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">老板驾驶舱</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="leads">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">线索管理</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="orders">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <path d="M16 10a4 4 0 01-8 0"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">订单管理</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="tasks">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">任务管理</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="contracts">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <polyline points="14,2 14,8 20,8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">合同管理</span>
+                </a>
+                <div class="side-menu-group">
+                    <a href="#" class="side-menu-card has-submenu" data-page="finance">
+                        <div class="side-menu-icon" style="background: linear-gradient(135deg, #ef4444, #f87171);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                            </svg>
+                        </div>
+                        <span class="side-menu-title">财务管理</span>
+                        <span class="submenu-arrow">&rsaquo;</span>
+                    </a>
+                    <div class="side-submenu">
+                        <a href="#" class="side-submenu-item" data-page="finance-journal">公司日记账</a>
+                    </div>
+                </div>
+                <div class="side-menu-group">
+                    <a href="#" class="side-menu-card has-submenu" data-page="hr">
+                        <div class="side-menu-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 010 7.75"/>
+                            </svg>
+                        </div>
+                        <span class="side-menu-title">人事管理</span>
+                        <span class="submenu-arrow">&rsaquo;</span>
+                    </a>
+                    <div class="side-submenu">
+                        <a href="#" class="side-submenu-item" data-page="hr-org">公司组织框架</a>
+                    </div>
+                </div>
+                <div class="side-menu-group">
+                    <a href="#" class="side-menu-card has-submenu" data-page="performance">
+                        <div class="side-menu-icon" style="background: linear-gradient(135deg, #14b8a6, #2dd4bf);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="20" x2="18" y2="10"/>
+                                <line x1="12" y1="20" x2="12" y2="4"/>
+                                <line x1="6" y1="20" x2="6" y2="14"/>
+                            </svg>
+                        </div>
+                        <span class="side-menu-title">绩效管理</span>
+                        <span class="submenu-arrow">&rsaquo;</span>
+                    </a>
+                    <div class="side-submenu">
+                        <a href="#" class="side-submenu-item" data-page="perf-consultant">顾问部绩效</a>
+                        <a href="#" class="side-submenu-item" data-page="perf-accounting">会计部绩效</a>
+                        <a href="#" class="side-submenu-item" data-page="perf-business">工商部绩效</a>
+                        <a href="#" class="side-submenu-item" data-page="perf-seal">刻章部绩效</a>
+                        <a href="#" class="side-submenu-item" data-page="perf-hr">人事部绩效</a>
+                        <a href="#" class="side-submenu-item" data-page="perf-operation">运营部绩效</a>
+                    </div>
+                </div>
+                <a href="#" class="side-menu-card" data-page="messages">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #06b6d4, #67e8f9);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">消息</span>
+                </a>
+                <a href="#" class="side-menu-card" data-page="expense">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #f97316, #fb923c);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                            <line x1="1" y1="10" x2="23" y2="10"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">报销管理</span>
+                </a>
+                <div class="side-menu-group">
+                    <a href="#" class="side-menu-card has-submenu" data-page="system">
+                        <div class="side-menu-icon" style="background: linear-gradient(135deg, #475569, #64748b);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                            </svg>
+                        </div>
+                        <span class="side-menu-title">系统管理</span>
+                        <span class="submenu-arrow">&rsaquo;</span>
+                    </a>
+                    <div class="side-submenu">
+                        <a href="#" class="side-submenu-item" data-page="system-permissions">人员权限管理</a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 右侧内容区 -->
+            <main class="content-area">
+                <div class="content-placeholder">
+                    <div class="placeholder-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                    </div>
+                    <h2 id="content-title">老板驾驶舱</h2>
+                    <p>模块开发中，敬请期待</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cloud-storage.js"></script>
+    <script src="js/cockpit.js"></script>
+    <script src="js/leads.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/hr-org.js"></script>
+    <script src="js/finance-journal.js"></script>
+    <script src="js/system-permissions.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
