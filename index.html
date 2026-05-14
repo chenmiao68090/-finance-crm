@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>浙杭企服</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/mt-style.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -287,6 +289,18 @@
                     </div>
                     <span class="side-menu-title">消息</span>
                 </a>
+                <a href="#" class="side-menu-card" data-page="multitable">
+                    <div class="side-menu-icon" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                            <line x1="3" y1="15" x2="21" y2="15"/>
+                            <line x1="9" y1="3" x2="9" y2="21"/>
+                            <line x1="15" y1="3" x2="15" y2="21"/>
+                        </svg>
+                    </div>
+                    <span class="side-menu-title">多维表格</span>
+                </a>
                 <a href="#" class="side-menu-card" data-page="expense">
                     <div class="side-menu-icon" style="background: linear-gradient(135deg, #f97316, #fb923c);">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -332,16 +346,24 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/cloud-storage.js"></script>
-    <script src="js/cockpit.js"></script>
-    <script src="js/leads.js"></script>
-    <script src="js/home.js"></script>
-    <script src="js/messages.js"></script>
-    <script src="js/hr-org.js"></script>
-    <script src="js/finance-journal.js"></script>
-    <script src="js/system-permissions.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/config.js?v=3"></script>
+    <script src="js/auth.js?v=3"></script>
+    <script src="js/cloud-storage.js?v=3"></script>
+    <script src="js/cockpit.js?v=3"></script>
+    <script src="js/leads.js?v=3"></script>
+    <script src="js/home.js?v=3"></script>
+    <script src="js/messages.js?v=3"></script>
+    <script src="js/hr-org.js?v=3"></script>
+    <script src="js/finance-journal.js?v=3"></script>
+    <!-- 多维表格模块 (按依赖顺序加载) -->
+    <script src="js/mt-core.js?v=3"></script>
+    <script src="js/mt-fields.js?v=3"></script>
+    <script src="js/mt-grid.js?v=3"></script>
+    <script src="js/mt-views.js?v=3"></script>
+    <script src="js/mt-toolbar.js?v=3"></script>
+    <script src="js/mt-dashboard.js?v=3"></script>
+    <script src="js/multitable.js?v=3"></script>
+    <script src="js/system-permissions.js?v=3"></script>
+    <script src="js/app.js?v=3"></script>
 </body>
 </html>

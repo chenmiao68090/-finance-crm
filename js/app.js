@@ -19,6 +19,7 @@ const pageNames = {
     'perf-hr': '人事部绩效',
     'perf-operation': '运营部绩效',
     'messages': '消息',
+    'multitable': '多维表格',
     'expense': '报销管理',
     'system': '系统管理',
     'system-permissions': '人员权限管理'
@@ -87,6 +88,9 @@ function navigateTo(page) {
     if (currentPage === 'finance-journal' && typeof FinanceJournal !== 'undefined') {
         FinanceJournal.destroy();
     }
+    if (currentPage === 'multitable' && typeof MultiTable !== 'undefined') {
+        MultiTable.destroy();
+    }
 
     currentPage = page;
 
@@ -102,6 +106,8 @@ function navigateTo(page) {
         HrOrg.init();
     } else if (page === 'finance-journal') {
         FinanceJournal.init();
+    } else if (page === 'multitable') {
+        MultiTable.init();
     } else if (page === 'system-permissions') {
         SystemPermissions.init();
     } else {
