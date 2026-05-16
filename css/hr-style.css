@@ -1,0 +1,2689 @@
+/* ===== 人事管理模块样式 - 参考北森/薪人薪事风格 ===== */
+
+/* 通用模块头部 */
+.hr-module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.hr-module-title h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.hr-module-desc {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.hr-header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-hr-primary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.btn-hr-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+}
+
+.btn-hr-secondary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    background: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-hr-secondary:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.btn-hr-outline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    background: #fff;
+    color: #4f46e5;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-hr-outline:hover {
+    border-color: #4f46e5;
+    background: #f5f3ff;
+}
+
+.btn-sm {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+}
+
+.btn-xs {
+    padding: 2px 6px !important;
+    font-size: 11px !important;
+}
+
+/* 统计卡片行 */
+.hr-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.hr-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s;
+}
+
+.hr-stat-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transform: translateY(-1px);
+}
+
+.hr-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.hr-stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.hr-stat-num {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.hr-stat-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* 工具栏 */
+.hr-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+}
+
+.hr-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hr-toolbar-right {
+    display: flex;
+    gap: 4px;
+}
+
+.hr-search-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 240px;
+    color: #94a3b8;
+}
+
+.hr-search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    width: 100%;
+    color: #334155;
+}
+
+.hr-filter-select {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #475569;
+    background: #f8fafc;
+    cursor: pointer;
+    outline: none;
+}
+
+.hr-filter-select:focus {
+    border-color: #4f46e5;
+}
+
+.hr-view-btn {
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: all 0.2s;
+}
+
+.hr-view-btn.active,
+.hr-view-btn:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #fff;
+}
+
+/* 表格样式 */
+.hr-table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.hr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.hr-table thead tr {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hr-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
+}
+
+.hr-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.hr-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.hr-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hr-table tfoot tr {
+    background: #f8fafc;
+    border-top: 2px solid #e2e8f0;
+}
+
+.hr-table tfoot td {
+    padding: 12px 16px;
+    font-weight: 600;
+}
+
+/* 员工头像 */
+.emp-avatar-sm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.emp-avatar-lg {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emp-name {
+    display: flex;
+    align-items: center;
+}
+
+/* 状态徽章 */
+.status-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-dot.active { background: #d1fae5; color: #059669; }
+.status-dot.active::before { background: #059669; }
+.status-dot.trial { background: #fef3c7; color: #d97706; }
+.status-dot.trial::before { background: #d97706; }
+.status-dot.left { background: #fee2e2; color: #dc2626; }
+.status-dot.left::before { background: #dc2626; }
+
+.level-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #ede9fe;
+    color: #7c3aed;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* 卡片网格视图 */
+.hr-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.hr-emp-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.hr-emp-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: #c7d2fe;
+}
+
+.hr-emp-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.emp-card-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.emp-card-info p {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.hr-emp-card-body .emp-card-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+}
+
+.hr-emp-card-body .emp-card-row span:first-child {
+    color: #94a3b8;
+}
+
+.hr-emp-card-body .emp-card-row span:last-child {
+    color: #334155;
+    font-weight: 500;
+}
+
+/* 详情页 */
+.hr-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.hr-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.hr-back-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.hr-detail-profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 24px;
+}
+
+.hr-detail-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    font-size: 28px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.hr-detail-basic h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hr-detail-basic > p {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.hr-detail-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.hr-tag {
+    padding: 3px 10px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.hr-detail-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0;
+}
+
+.hr-detail-tab {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #64748b;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.hr-detail-tab.active,
+.hr-detail-tab:hover {
+    color: #4f46e5;
+    border-bottom-color: #4f46e5;
+}
+
+.hr-detail-section {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+}
+
+.hr-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.hr-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hr-info-item label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.hr-info-item span {
+    font-size: 14px;
+    color: #0f172a;
+    font-weight: 500;
+}
+
+/* 操作按钮 */
+.hr-action-btn {
+    padding: 5px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    background: #fff;
+    color: #4f46e5;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.hr-action-btn:hover {
+    background: #4f46e5;
+    color: #fff;
+    border-color: #4f46e5;
+}
+
+.hr-action-btn.danger { color: #dc2626; border-color: #fee2e2; }
+.hr-action-btn.danger:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+
+.approve-btn { color: #059669; border-color: #d1fae5; }
+.approve-btn:hover { background: #059669; color: #fff; border-color: #059669; }
+.reject-btn { color: #dc2626; border-color: #fee2e2; }
+.reject-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+
+/* 招聘模块 */
+.urgency-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.urgency-badge.urgent {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.urgency-badge.normal {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.recruit-status {
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.recruit-status.active {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.recruit-status.paused {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.salary-text {
+    color: #059669;
+    font-weight: 600;
+}
+
+.stage-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.notes-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 招聘漏斗 */
+.recruit-pipeline {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+}
+
+.pipeline-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+.pipeline-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.pipeline-stage {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.pipeline-bar-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pipeline-bar {
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    min-width: 40px;
+    transition: width 0.3s;
+}
+
+.pipeline-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.pipeline-label {
+    font-size: 13px;
+    color: #64748b;
+    min-width: 60px;
+}
+
+.pipeline-summary {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.pipeline-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.metric-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* 考勤模块 */
+.attendance-date-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+    color: #475569;
+}
+
+.attendance-summary {
+    font-weight: 600;
+    color: #059669;
+}
+
+.attendance-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.attendance-status.normal { background: #d1fae5; color: #059669; }
+.attendance-status.late { background: #fee2e2; color: #dc2626; }
+.attendance-status.early { background: #fef3c7; color: #d97706; }
+.attendance-status.leave { background: #dbeafe; color: #2563eb; }
+.attendance-status.outside { background: #ede9fe; color: #7c3aed; }
+
+.leave-type-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.leave-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.leave-status.approved { background: #d1fae5; color: #059669; }
+.leave-status.pending { background: #fef3c7; color: #d97706; }
+.leave-status.rejected { background: #fee2e2; color: #dc2626; }
+
+.stats-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.text-green { color: #059669; }
+.text-red { color: #dc2626; }
+.text-blue { color: #2563eb; }
+
+.progress-bar-mini {
+    display: inline-block;
+    width: 60px;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 3px;
+}
+
+/* 考勤规则 */
+.attendance-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rules-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+}
+
+.rules-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.rule-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.rule-item label {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.rule-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.leave-types-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.leave-type-item {
+    padding: 8px 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #475569;
+}
+
+/* 薪酬模块 */
+.payroll-month {
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.salary-net {
+    color: #059669 !important;
+}
+
+.salary-structure {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.structure-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.structure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.structure-card {
+    text-align: center;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s;
+}
+
+.structure-card:hover {
+    border-color: #4f46e5;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+.structure-level {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+.structure-title-text {
+    font-size: 12px;
+    color: #64748b;
+    margin: 4px 0;
+}
+
+.structure-range {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-top: 6px;
+}
+
+.salary-components {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+}
+
+.salary-components h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.component-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.component-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.component-bar {
+    height: 24px;
+    border-radius: 4px;
+    min-width: 40px;
+}
+
+.component-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    min-width: 140px;
+}
+
+.component-desc {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* 人力成本 */
+.hr-cost-analysis {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 24px;
+}
+
+.cost-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cost-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cost-dept-name {
+    font-size: 13px;
+    color: #475569;
+    min-width: 80px;
+    font-weight: 500;
+}
+
+.cost-bar-wrap {
+    flex: 1;
+    height: 28px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.cost-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4f46e5, #818cf8);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    transition: width 0.3s;
+}
+
+.cost-bar-label {
+    font-size: 11px;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.cost-headcount {
+    font-size: 12px;
+    color: #94a3b8;
+    min-width: 40px;
+}
+
+/* 入转调离模块 */
+.lifecycle-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+}
+
+.lifecycle-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.lifecycle-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.lifecycle-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lifecycle-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.lifecycle-info p {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.lifecycle-status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-left: auto;
+}
+
+.lifecycle-status.pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.lifecycle-status.completed {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.lifecycle-card-body .lifecycle-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+}
+
+.lifecycle-card-body .lifecycle-row span:first-child {
+    color: #94a3b8;
+}
+
+.lifecycle-card-body .lifecycle-row strong {
+    color: #4f46e5;
+}
+
+.lifecycle-checklist {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.lifecycle-checklist h5 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 8px;
+}
+
+.checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #475569;
+    cursor: pointer;
+}
+
+.checklist-item input[type="checkbox"] {
+    accent-color: #4f46e5;
+}
+
+.checklist-item input:checked + span {
+    text-decoration: line-through;
+    color: #94a3b8;
+}
+
+/* 调岗/晋升 */
+.transfer-type {
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.transfer-type.promote {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.transfer-type.transfer {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+/* 转正评分 */
+.score-badge {
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.score-badge.good { background: #d1fae5; color: #059669; }
+.score-badge.normal { background: #fef3c7; color: #d97706; }
+.score-badge.bad { background: #fee2e2; color: #dc2626; }
+
+/* 离职类型 */
+.departure-type {
+    padding: 3px 8px;
+    background: #fee2e2;
+    color: #dc2626;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* 空状态 */
+.hr-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* 表格底部 */
+.hr-table-footer {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: #94a3b8;
+    border-top: 1px solid #f1f5f9;
+    text-align: right;
+}
+
+.action-cell {
+    white-space: nowrap;
+}
+
+.action-cell .hr-action-btn {
+    margin-right: 4px;
+}
+
+/* ===== 模态框 ===== */
+.hr-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.hr-modal {
+    background: #fff;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 720px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-20px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hr-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.hr-modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.hr-modal-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 20px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.hr-modal-close:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.hr-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.hr-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* ===== 表单样式 ===== */
+.hr-form-section {
+    margin-bottom: 24px;
+}
+
+.hr-form-section:last-child {
+    margin-bottom: 0;
+}
+
+.hr-form-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.hr-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.hr-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hr-form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.hr-form-group .required {
+    color: #ef4444;
+}
+
+.hr-form-group input,
+.hr-form-group select,
+.hr-form-group textarea {
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0f172a;
+    background: #fff;
+    transition: border-color 0.15s;
+    outline: none;
+    width: 100%;
+}
+
+.hr-form-group input:focus,
+.hr-form-group select:focus,
+.hr-form-group textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+}
+
+.hr-form-group input::placeholder {
+    color: #94a3b8;
+}
+
+.hr-form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.hr-form-group-full {
+    grid-column: 1 / -1;
+}
+
+/* 小型模态框 */
+.hr-modal-sm {
+    max-width: 480px;
+}
+
+@media (max-width: 768px) {
+    .hr-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .hr-modal {
+        width: 95%;
+        max-height: 90vh;
+    }
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+    .hr-stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hr-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .rules-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hr-stats-row {
+        grid-template-columns: 1fr;
+    }
+    .hr-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .hr-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .hr-toolbar-left {
+        flex-wrap: wrap;
+    }
+    .lifecycle-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== 补充表单样式 ===== */
+.hr-form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.hr-form-item label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.hr-form-item .required {
+    color: #ef4444;
+}
+
+.hr-form-item input,
+.hr-form-item select,
+.hr-form-item textarea {
+    padding: 9px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0f172a;
+    background: #fff;
+    transition: border-color 0.15s;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.hr-form-item input:focus,
+.hr-form-item select:focus,
+.hr-form-item textarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+}
+
+.hr-form-item textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.hr-form-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.hr-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* 筛选栏 */
+.hr-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 16px;
+}
+
+/* 入转调离卡片操作 */
+.lifecycle-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.lifecycle-status.cancelled {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* 颜色辅助 */
+.text-orange { color: #d97706; }
+
+/* 入职管理 add-type */
+.leave-type-item.add-type {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 考勤旷工状态 */
+.attendance-status.absent {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ===== 部门管理模块 ===== */
+.hr-module-stats {
+    margin-bottom: 20px;
+}
+
+.hr-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.hr-stat-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    padding: 20px;
+    text-align: center;
+}
+
+.hr-stat-number {
+    font-size: 28px;
+    font-weight: 700;
+    color: #4f46e5;
+}
+
+.hr-stat-label {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* 视图切换按钮 */
+.hr-view-toggle {
+    display: flex;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-hr-toggle {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background: #fff;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-hr-toggle:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+
+.btn-hr-toggle.active {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn-hr-toggle:hover:not(.active) {
+    background: #f8fafc;
+}
+
+/* 部门树形视图 */
+.dept-tree {
+    padding: 16px;
+}
+
+.dept-tree-item {
+    margin-bottom: 4px;
+}
+
+.dept-tree-item.collapsed > .dept-tree-children {
+    display: none;
+}
+
+.dept-tree-node {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #f1f5f9;
+    background: #fff;
+    transition: all 0.15s;
+}
+
+.dept-tree-node:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.dept-tree-expand {
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.dept-tree-expand.has-children:hover {
+    color: #4f46e5;
+}
+
+.dept-tree-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.dept-tree-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.dept-tree-code {
+    font-size: 11px;
+    color: #94a3b8;
+    padding: 2px 6px;
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.dept-tree-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+    margin-right: 12px;
+}
+
+.dept-tree-manager,
+.dept-tree-count {
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dept-tree-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.dept-tree-node:hover .dept-tree-actions {
+    opacity: 1;
+}
+
+.dept-tree-children {
+    margin-top: 4px;
+    padding-left: 8px;
+    border-left: 2px solid #f1f5f9;
+    margin-left: 10px;
+}
+
+/* 表单行（两列） */
+.hr-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+/* ===== 汇报关系视图 ===== */
+.hierarchy-container {
+    padding: 16px;
+}
+
+.hierarchy-desc {
+    padding: 12px 16px;
+    background: #eff6ff;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1e40af;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hierarchy-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.hierarchy-item {
+    margin-bottom: 8px;
+}
+
+.hierarchy-dept-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    margin-bottom: 4px;
+}
+
+.hierarchy-icon {
+    color: #f59e0b;
+    font-size: 14px;
+}
+
+.hierarchy-dept-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.hierarchy-manager {
+    font-size: 12px;
+    color: #4f46e5;
+    margin-left: auto;
+}
+
+.hierarchy-manager i {
+    color: #f59e0b;
+    margin-right: 4px;
+}
+
+.hierarchy-members {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0;
+}
+
+.hierarchy-member {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.hierarchy-member i {
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.hierarchy-member-name {
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.hierarchy-member-pos {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.hierarchy-member-sup {
+    margin-left: auto;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.hierarchy-more {
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* 部门详情卡片底部 */
+.dept-info-footer {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    gap: 8px;
+}
+
+/* 组织架构图增强 - 使用flex布局 */
+.org-chart .org-sub-nodes {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.org-chart .org-level-2 {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.org-node-card .org-node-person i {
+    color: #4f46e5;
+    margin-right: 4px;
+}
+
+/* 空状态增强 */
+.hr-empty {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+}
+
+/* 筛选栏增强 */
+.hr-filter-bar input,
+.hr-filter-bar select {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+}
+
+.hr-filter-bar input:focus,
+.hr-filter-bar select:focus {
+    border-color: #4f46e5;
+}
+
+.hr-filter-bar .roster-count {
+    margin-left: auto;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* 统计徽章 */
+.org-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.org-stat-badge strong {
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+/* ===== 绩效管理模块 ===== */
+.perf-container, .training-container, .planning-container {
+    padding: 24px;
+}
+
+.perf-tabs, .training-tabs, .planning-tabs {
+    display: flex;
+    gap: 4px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.perf-tab, .training-tab, .planning-tab {
+    padding: 10px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #64748b;
+    white-space: nowrap;
+    transition: all .2s;
+}
+
+.perf-tab.active, .training-tab.active, .planning-tab.active {
+    background: #fff;
+    color: #4f46e5;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+.perf-tab-content, .training-tab-content, .planning-tab-content {
+    display: none;
+}
+
+.perf-tab-content.active, .training-tab-content.active, .planning-tab-content.active {
+    display: block;
+}
+
+/* 绩效统计卡片 */
+.perf-stat-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.perf-stat-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+}
+
+.perf-stat-card .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.perf-stat-card .stat-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* 绩效表格 */
+.perf-table, .training-table, .planning-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.perf-table th, .training-table th, .planning-table th {
+    background: #f8fafc;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.perf-table td, .training-table td, .planning-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.perf-table tr:hover td, .training-table tr:hover td, .planning-table tr:hover td {
+    background: #f8fafc;
+}
+
+/* 绩效等级徽章 */
+.perf-grade-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.perf-grade-badge.grade-S { background: #fef3c7; color: #d97706; }
+.perf-grade-badge.grade-A { background: #dcfce7; color: #16a34a; }
+.perf-grade-badge.grade-B { background: #dbeafe; color: #2563eb; }
+.perf-grade-badge.grade-C { background: #f1f5f9; color: #64748b; }
+.perf-grade-badge.grade-D { background: #fee2e2; color: #dc2626; }
+
+/* OKR 树 */
+.okr-tree {
+    padding: 12px 0;
+}
+
+.okr-node {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    transition: box-shadow .2s;
+}
+
+.okr-node:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+.okr-node .okr-title {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.okr-node .okr-meta {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.okr-progress {
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.okr-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    transition: width .3s;
+}
+
+.okr-children {
+    margin-left: 24px;
+    padding-left: 16px;
+    border-left: 2px solid #e2e8f0;
+}
+
+/* 九宫格 */
+.nine-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+    max-width: 600px;
+    margin: 0 auto;
+    aspect-ratio: 1;
+}
+
+.nine-grid-cell {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    position: relative;
+}
+
+.nine-grid-cell .cell-label {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.nine-grid-cell .cell-avatars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+}
+
+.nine-grid-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #4f46e5;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.nine-grid-cell.high-perf { background: #f0fdf4; }
+.nine-grid-cell.mid-perf { background: #fffbeb; }
+.nine-grid-cell.low-perf { background: #fef2f2; }
+
+/* 考核评价卡片 */
+.perf-eval-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.perf-eval-card .eval-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.perf-score-bar {
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.perf-score-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #4f46e5, #818cf8);
+}
+
+/* 绩效结果卡片 */
+.perf-result-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.perf-result-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.perf-result-card .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.perf-application-section {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.perf-application-section h4 {
+    margin-bottom: 12px;
+    color: #1e293b;
+}
+
+/* ===== 培训发展模块 ===== */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.course-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow .2s;
+}
+
+.course-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+.course-card-header {
+    padding: 16px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+}
+
+.course-card-header h4 {
+    margin: 0 0 4px;
+    font-size: 15px;
+}
+
+.course-card-body {
+    padding: 14px 16px;
+}
+
+.course-category-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    background: rgba(255,255,255,.2);
+    color: #fff;
+}
+
+/* 技能矩阵 */
+.skill-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.skill-matrix-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.skill-matrix-card h4 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.skill-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.skill-bar .skill-name {
+    width: 80px;
+    font-size: 12px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.skill-bar-fill {
+    flex: 1;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-bar-fill .fill-inner {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    border-radius: 4px;
+    transition: width .3s;
+}
+
+.skill-level {
+    font-size: 11px;
+    color: #64748b;
+    width: 30px;
+    text-align: right;
+}
+
+/* 培训看板 */
+.training-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.dashboard-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.dashboard-section h4 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.dept-hours-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dept-hours-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dept-hours-bar .dept-name {
+    width: 80px;
+    font-size: 12px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.dept-hours-fill {
+    flex: 1;
+    height: 20px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dept-hours-fill .fill-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* AI推荐面板 */
+.ai-recommend-panel {
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: #4f46e5;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.ai-recommend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ai-recommend-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+    color: #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-recommend-item:last-child {
+    border-bottom: none;
+}
+
+.ai-recommend-item .recommend-reason {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* ===== 人力规划模块 ===== */
+.cost-dashboard {
+    display: grid;
+    gap: 20px;
+}
+
+.cost-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.cost-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+}
+
+.cost-card .cost-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.cost-card .cost-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.cost-chart-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.cost-bar-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cost-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cost-bar-item .bar-label {
+    width: 80px;
+    font-size: 12px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.cost-bar {
+    flex: 1;
+    height: 24px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cost-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 4px;
+    opacity: .3;
+}
+
+.cost-bar-actual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    border-radius: 4px;
+}
+
+.cost-bar-item .bar-value {
+    width: 100px;
+    font-size: 11px;
+    color: #64748b;
+    text-align: right;
+}
+
+/* 人才盘点 */
+.talent-inventory {
+    display: grid;
+    gap: 20px;
+}
+
+.talent-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.talent-section h4 {
+    margin: 0 0 14px;
+    color: #1e293b;
+}
+
+.mini-nine-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    max-width: 400px;
+}
+
+.mini-nine-cell {
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mini-nine-cell .cell-count-label {
+    font-size: 10px;
+    font-weight: 400;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.star-risk-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.star-card, .risk-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.star-card { border-left: 4px solid #f59e0b; }
+.risk-card { border-left: 4px solid #ef4444; }
+
+.star-card h5, .risk-card h5 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: #475569;
+}
+
+.star-card .emp-item, .risk-card .emp-item {
+    padding: 6px 0;
+    font-size: 13px;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* 组织健康度 */
+.health-dashboard {
+    display: grid;
+    gap: 20px;
+}
+
+.health-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.health-chart-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.health-chart-card h4 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.chart-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chart-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-bar-item .bar-label {
+    width: 60px;
+    font-size: 12px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.chart-bar {
+    flex: 1;
+    height: 18px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.chart-bar-inner {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .3s;
+}
+
+.chart-bar-item .bar-pct {
+    width: 40px;
+    font-size: 11px;
+    color: #64748b;
+    text-align: right;
+}
+
+/* AI洞察 */
+.ai-insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+}
+
+.insight-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+    position: relative;
+}
+
+.insight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.insight-header h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.ai-confidence {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #f0fdf4;
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.risk-score-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.risk-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.risk-item .risk-name {
+    width: 70px;
+    font-size: 12px;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.risk-bar {
+    flex: 1;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.risk-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width .3s;
+}
+
+.risk-bar-fill.low { background: #10b981; }
+.risk-bar-fill.medium { background: #f59e0b; }
+.risk-bar-fill.high { background: #ef4444; }
+
+.risk-item .risk-value {
+    width: 35px;
+    font-size: 11px;
+    color: #64748b;
+    text-align: right;
+}
+
+/* 需后端支持标识 */
+.backend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #fef3c7;
+    color: #d97706;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .hr-stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hr-form-row {
+        grid-template-columns: 1fr;
+    }
+    .dept-tree-meta {
+        display: none;
+    }
+    .training-dashboard {
+        grid-template-columns: 1fr;
+    }
+    .star-risk-cards {
+        grid-template-columns: 1fr;
+    }
+    .nine-grid-container {
+        max-width: 100%;
+    }
+    .perf-tabs, .training-tabs, .planning-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+}

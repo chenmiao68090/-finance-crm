@@ -11,7 +11,17 @@ const pageNames = {
     'finance-journal': '公司日记账',
     'hr': '人事管理',
     'hr-org': '公司组织框架',
+    'hr-department': '部门管理',
+    'hr-employee': '员工档案',
+    'hr-recruit': '招聘管理',
+    'hr-attendance': '考勤管理',
+    'hr-salary': '薪酬管理',
+    'hr-lifecycle': '入转调离',
+    'hr-performance': '绩效考核',
+    'hr-training': '培训发展',
+    'hr-planning': '人力规划',
     'performance': '绩效管理',
+    'perf-management': '业务绩效总览',
     'perf-consultant': '顾问部绩效',
     'perf-accounting': '会计部绩效',
     'perf-business': '工商部绩效',
@@ -91,6 +101,30 @@ function navigateTo(page) {
     if (currentPage === 'multitable' && typeof MultiTable !== 'undefined') {
         MultiTable.destroy();
     }
+    if (currentPage === 'hr-performance' && typeof HrPerformance !== 'undefined') {
+        HrPerformance.destroy();
+    }
+    if (currentPage === 'hr-training' && typeof HrTraining !== 'undefined') {
+        HrTraining.destroy();
+    }
+    if (currentPage === 'hr-planning' && typeof HrPlanning !== 'undefined') {
+        HrPlanning.destroy();
+    }
+    if (currentPage === 'orders' && typeof Orders !== 'undefined') {
+        Orders.destroy();
+    }
+    if (currentPage === 'tasks' && typeof Tasks !== 'undefined') {
+        Tasks.destroy();
+    }
+    if (currentPage === 'contracts' && typeof Contracts !== 'undefined') {
+        Contracts.destroy();
+    }
+    if (currentPage === 'finance' && typeof Finance !== 'undefined') {
+        Finance.destroy();
+    }
+    if (currentPage === 'perf-management' && typeof PerfManagement !== 'undefined') {
+        PerfManagement.destroy();
+    }
 
     currentPage = page;
 
@@ -100,10 +134,38 @@ function navigateTo(page) {
         Cockpit.init();
     } else if (page === 'leads') {
         Leads.init();
+    } else if (page === 'orders') {
+        Orders.init();
+    } else if (page === 'tasks') {
+        Tasks.init();
+    } else if (page === 'contracts') {
+        Contracts.init();
+    } else if (page === 'finance') {
+        Finance.init();
+    } else if (page === 'perf-management' || page === 'performance') {
+        PerfManagement.init();
     } else if (page === 'messages') {
         Messages.init();
     } else if (page === 'hr-org') {
         HrOrg.init();
+    } else if (page === 'hr-department') {
+        HrDepartment.init();
+    } else if (page === 'hr-employee') {
+        HrEmployee.init();
+    } else if (page === 'hr-recruit') {
+        HrRecruit.init();
+    } else if (page === 'hr-attendance') {
+        HrAttendance.init();
+    } else if (page === 'hr-salary') {
+        HrSalary.init();
+    } else if (page === 'hr-lifecycle') {
+        HrLifecycle.init();
+    } else if (page === 'hr-performance') {
+        HrPerformance.init();
+    } else if (page === 'hr-training') {
+        HrTraining.init();
+    } else if (page === 'hr-planning') {
+        HrPlanning.init();
     } else if (page === 'finance-journal') {
         FinanceJournal.init();
     } else if (page === 'multitable') {
