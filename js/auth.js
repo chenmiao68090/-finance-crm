@@ -130,7 +130,7 @@ const Auth = {
                 await this.login(email, password);
                 errorMsg.textContent = '';
             } catch (error) {
-                errorMsg.textContent = error.message || '登录失败,请检查账号和密码';
+                errorMsg.textContent = this.translateError(error.message);
             } finally {
                 this.hideLoading();
             }
@@ -190,7 +190,7 @@ const Auth = {
                     }
                 }
             } catch (error) {
-                errorMsg.textContent = error.message || '注册失败';
+                errorMsg.textContent = this.translateError(error.message);
             } finally {
                 this.hideLoading();
             }
@@ -248,6 +248,24 @@ const Auth = {
     // 检查是否已登录
     isLoggedIn() {
         return this.currentUser !== null;
+    },
+
+    // 翻译错误信息
+    translateError(msg) {
+        const map = {
+            'Invalid login credentials': '账号或密码错误',
+            'Email not confirmed': '邮箱未验证，请先验证邮箱',
+            'User not found': '用户不存在',
+            'User already registered': '该账号已注册',
+            'Password should be at least 6 characters': '密码长度至少6位',
+            'Signup is disabled': '注册功能暂未开放',
+            'Email rate limit exceeded': '操作过于频繁，请稍后再试',
+            'Network error': '网络连接失败，请检查网络'
+        };
+        for (const [en, zh] of Object.entries(map)) {
+            if (msg && msg.includes(en)) return zh;
+        }
+        return '操作失败，请稍后重试';
     }
 };
 

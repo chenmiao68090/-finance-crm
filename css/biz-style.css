@@ -1395,3 +1395,532 @@
 @media (max-width: 480px) {
     .task-board { grid-template-columns: 1fr; }
 }
+
+/* ===== 绩效管理增强样式 ===== */
+
+/* 绩效等级标签 */
+.perf-grade {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.grade-S { background: #fef3c7; color: #b45309; }
+.grade-A { background: #dcfce7; color: #166534; }
+.grade-B { background: #dbeafe; color: #1e40af; }
+.grade-C { background: #fef3c7; color: #92400e; }
+.grade-D { background: #fecaca; color: #991b1b; }
+
+/* 等级分布 */
+.grade-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.grade-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.grade-bar {
+    flex: 1;
+    height: 16px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.grade-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.grade-fill-S { background: #f59e0b; }
+.grade-fill-A { background: #10b981; }
+.grade-fill-B { background: #3b82f6; }
+.grade-fill-C { background: #f59e0b; }
+.grade-fill-D { background: #dc2626; }
+
+.grade-count {
+    font-size: 12px;
+    color: #64748b;
+    width: 35px;
+}
+
+/* 趋势图 */
+.trend-chart {
+    margin-top: 8px;
+}
+
+.trend-header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0;
+    padding-left: 60px;
+    margin-bottom: 6px;
+}
+
+.trend-header span {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.trend-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    margin-bottom: 8px;
+    height: 50px;
+}
+
+.trend-name {
+    width: 55px;
+    font-size: 11px;
+    font-weight: 500;
+    flex-shrink: 0;
+    text-align: right;
+    padding-right: 6px;
+    align-self: center;
+}
+
+.trend-bars {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    height: 100%;
+    align-items: flex-end;
+}
+
+.trend-bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.trend-bar-val {
+    width: 70%;
+    border-radius: 3px 3px 0 0;
+    min-height: 4px;
+    transition: height 0.3s;
+}
+
+.trend-bar-lbl {
+    font-size: 9px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+/* 维度条形图单元格 */
+.mini-bar-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.mini-bar-track {
+    width: 60px;
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mini-bar-val {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.mini-bar-cell span {
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+    width: 24px;
+}
+
+/* 部门标签 */
+.dept-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #475569;
+}
+
+/* 评分输入框 */
+.score-input {
+    width: 60px;
+    padding: 4px 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    color: #334155;
+    transition: border-color 0.2s;
+}
+
+.score-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+/* 评语相关 */
+.eval-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eval-item {
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.eval-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.eval-item-text {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.5;
+    margin: 0 0 4px;
+}
+
+.eval-item-author {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+/* 快捷评语模板 */
+.eval-templates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.eval-tpl-tag {
+    padding: 4px 10px;
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 14px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.eval-tpl-tag:hover {
+    background: #4f46e5;
+    color: #fff;
+}
+
+/* 目标管理 */
+.goals-section .goals-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.goals-section .goals-header h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+}
+
+.goal-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    transition: box-shadow 0.2s;
+}
+
+.goal-card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06); }
+
+.goal-done { border-left: 4px solid #10b981; }
+.goal-good { border-left: 4px solid #3b82f6; }
+.goal-warn { border-left: 4px solid #f59e0b; }
+.goal-risk { border-left: 4px solid #dc2626; }
+
+.goal-card-header {
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.goal-card-header strong { font-size: 13px; color: #1e293b; }
+
+.goal-type-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 10px;
+}
+
+.goal-card-body {
+    padding: 14px 16px;
+}
+
+.goal-desc {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0 0 10px;
+    line-height: 1.4;
+}
+
+.goal-target,
+.goal-current {
+    font-size: 12px;
+    color: #475569;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.goal-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.goal-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #f1f5f9;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 5px;
+    transition: width 0.4s;
+}
+
+.goal-done .goal-progress-fill { background: #10b981; }
+.goal-warn .goal-progress-fill { background: #f59e0b; }
+.goal-risk .goal-progress-fill { background: #dc2626; }
+
+.goal-progress-pct {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    width: 40px;
+}
+
+.goal-card-footer {
+    padding: 10px 16px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 考核配置 */
+.config-weight-form {
+    padding: 18px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    margin-top: 14px;
+}
+
+.weight-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.weight-item label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.weight-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.weight-input {
+    width: 70px;
+    padding: 6px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.weight-input:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+/* 员工详情弹窗维度 */
+.emp-dimensions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.dim-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dim-label {
+    width: 40px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.dim-bar {
+    flex: 1;
+    height: 14px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dim-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s;
+}
+
+.dim-val {
+    width: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    text-align: right;
+}
+
+/* 历史得分条形图 */
+.emp-history-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.history-month {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-label {
+    width: 35px;
+    font-size: 12px;
+    color: #64748b;
+    text-align: right;
+}
+
+.history-bar-wrap {
+    flex: 1;
+    height: 16px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.history-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.history-val {
+    width: 40px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* 评分页面标题区 */
+.scoring-section .scoring-header {
+    margin-bottom: 16px;
+}
+
+.scoring-section .scoring-header h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+/* 明细报表 */
+.detail-section .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.detail-section .detail-header h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (max-width: 768px) {
+    .weight-row { grid-template-columns: 1fr; }
+    .goals-grid { grid-template-columns: 1fr; }
+    .trend-row { height: 40px; }
+}
+
