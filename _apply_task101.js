@@ -1,0 +1,818 @@
+// Task #101: Convert ivr.vue, IvrDesigner.vue, skill.vue to use i18n
+const fs = require('fs')
+const path = require('path')
+
+const UI_BASE = 'd:\\zhehang-erp\\zhehang-erp-ui\\src'
+const LOCALE_ZH = path.join(UI_BASE, 'locales', 'cc-zh-CN.ts')
+const LOCALE_EN = path.join(UI_BASE, 'locales', 'cc-en-US.ts')
+const FILE_IVR = path.join(UI_BASE, 'views', 'call-center', 'ivr.vue')
+const FILE_DESIGNER = path.join(UI_BASE, 'views', 'call-center', 'components', 'IvrDesigner.vue')
+const FILE_SKILL = path.join(UI_BASE, 'views', 'call-center', 'skill.vue')
+
+// ======================================================================
+// PART 1: Extend locale files with extra keys
+// ======================================================================
+
+// Extra zh keys to insert under cc.ivr (before "designer") and cc.skill
+const EXTRA_IVR_ZH = `
+      "stats": {
+        "totalFlows": "流程总数",
+        "onlineFlows": "在线运行",
+        "totalNodes": "节点累计"
+      },
+      "filter": {
+        "searchPlaceholder": "按流程名称搜索",
+        "statusPlaceholder": "状态筛选",
+        "statusAll": "全部状态"
+      },
+      "actionExt": {
+        "createBlank": "新建空白流程",
+        "createFromTemplate": "从模板创建",
+        "refresh": "刷新"
+      },
+      "list": {
+        "nodesEdges": "节点 / 连线",
+        "updatedTime": "更新时间",
+        "bindNumbers": "绑号",
+        "noDescription": "— 暂无描述 —",
+        "emptyTip": "尚未创建任何流程，从右上角开始",
+        "untitled": "未命名流程",
+        "startNodeName": "开始",
+        "copySuffix": "（副本）",
+        "deleteTitle": "删除确认",
+        "confirmDeleteBtn": "确认删除",
+        "publishedOnline": "已发布上线",
+        "copyFailed": "复制失败",
+        "templateLoadedPrefix": "已加载模板：",
+        "heroEyebrow": "CALL CENTER · IVR ENGINE / 浙杭企服",
+        "heroTitleMain": "交互语音流程",
+        "heroTitleEm": "设计中枢",
+        "heroSub": "可视化编排呼入路由 ／ 复用预置模板 ／ 协同上线发布"
+      },
+      "tplFlow": {
+        "presaleName": "售前咨询",
+        "presaleDesc": "产品咨询 / 价格优惠 / 转人工三路分流",
+        "presaleFlowName": "售前咨询流程",
+        "presaleWelcome": "您好，欢迎致电浙杭企服售前咨询热线",
+        "presaleMenu": "产品咨询请按1，价格优惠请按2，转人工请按0",
+        "presaleNodeWelcome": "欢迎语",
+        "presaleNodeMain": "主菜单",
+        "presaleNodeProduct": "产品咨询组",
+        "presaleNodePrice": "价格顾问",
+        "presaleNodeManual": "人工服务",
+        "presaleNodeEnd": "结束",
+        "aftersaleName": "售后服务",
+        "aftersaleDesc": "投诉建议 / 维修服务 / 退换货受理",
+        "aftersaleFlowName": "售后服务流程",
+        "aftersaleFlowDesc": "投诉 / 维修 / 退换货受理",
+        "aftersaleWelcome": "欢迎致电售后服务中心",
+        "aftersaleMenu": "投诉建议按1，维修服务按2，退换货按3，转人工按0",
+        "aftersaleNodeWelcome": "欢迎语",
+        "aftersaleNodeLevel": "客户级别",
+        "aftersaleNodeMenu": "售后菜单",
+        "aftersaleNodeComplaint": "投诉处理",
+        "aftersaleNodeRepair": "维修分配",
+        "aftersaleNodeReturn": "退换货",
+        "aftersaleNodeGeneral": "通用客服",
+        "satisfactionName": "满意度调查",
+        "satisfactionDesc": "1-5 分评分采集 / 文字备注 / 致谢挂机",
+        "satisfactionFlowName": "满意度回访流程",
+        "satisfactionFlowDesc": "1-5 分评分采集 / 致谢挂机",
+        "satisfactionTtsText": "感谢接听本次满意度回访，请在听到提示后为本次服务打1到5分",
+        "satisfactionMenu": "请按数字1至5为本次服务评分",
+        "satisfactionNodeGuide": "调研引导",
+        "satisfactionNodeRating": "评分采集",
+        "satisfactionNodeLow": "低分原因",
+        "satisfactionNodeHigh": "满意标记",
+        "satisfactionNodeCallback": "低分回访",
+        "satisfactionNodeThanks": "致谢语",
+        "satisfactionThanksText": "感谢您的支持，再见",
+        "satisfactionEdgeLow": "1-3 分",
+        "satisfactionEdgeHigh": "4-5 分",
+        "service24hName": "24小时服务",
+        "service24hDesc": "工作时段 / 非工作时段智能路由",
+        "service24hFlowName": "24小时智能路由",
+        "service24hFlowDesc": "按时段自动分配人工或留言",
+        "service24hNodeHour": "当前时段",
+        "service24hNodeJudge": "时段判断",
+        "service24hNodeWorkWelcome": "工作时段欢迎",
+        "service24hWorkText": "欢迎致电，正在为您接通人工坐席",
+        "service24hNodeWorkQueue": "人工排队",
+        "service24hNodeOff": "非工作时段",
+        "service24hOffText": "当前为非工作时段，请按提示留言",
+        "service24hNodeRecord": "记录留言",
+        "service24hNodeBye": "致谢挂机",
+        "service24hByeText": "感谢您的留言，工作日将尽快回电",
+        "service24hEdgeWork": "工作时间",
+        "service24hEdgeOff": "非工作",
+        "edgeKey1": "按1",
+        "edgeKey2": "按2",
+        "edgeKey3": "按3",
+        "edgeKey0": "按0"
+      },
+`
+
+// Extra zh keys for cc.ivr.designer extras
+const EXTRA_DESIGNER_ZH = `,
+        "extra": {
+          "backToList": "返回列表",
+          "namePlaceholder": "请输入流程名称",
+          "draftStatus": "草稿",
+          "publishedStatus": "已发布",
+          "tipAutoLayout": "自动布局",
+          "tipClearCanvas": "清空画布",
+          "tipJsonPreview": "JSON 预览",
+          "saveBtn": "保存流程",
+          "secNodeComponents": "节点组件",
+          "secFlowStats": "流程统计",
+          "statNodes": "节点",
+          "statEdges": "连线",
+          "helperDrag": "拖拽",
+          "helperDragText": "左侧节点入画布",
+          "helperPort": "点击端口",
+          "helperPortText": "拖出连线",
+          "helperBlank": "空白拖动",
+          "helperBlankText": "平移画布",
+          "helperDelete": "Delete",
+          "helperDeleteText": "删除选中",
+          "watermark": "IVR · BLUEPRINT",
+          "secProperties": "属性配置",
+          "emptyTitle": "选中节点或连线",
+          "emptySubtitle": "开始编辑属性",
+          "emptyTip": "提示：从左侧拖拽组件即可创建新节点",
+          "edgeLabel": "连线",
+          "form": {
+            "audioFile": "音频文件",
+            "audioPlaceholder": "welcome.wav",
+            "remarkText": "备注文本",
+            "remarkPlaceholder": "对应播放语的文字描述",
+            "ttsText": "TTS 文本",
+            "ttsPlaceholder": "请输入合成文本",
+            "voice": "发音人",
+            "voiceFemaleStd": "女声 · 标准",
+            "voiceMaleStd": "男声 · 标准",
+            "voiceFemaleSoft": "女声 · 温柔",
+            "voiceMaleDeep": "男声 · 沉稳",
+            "menuPrompt": "菜单提示语",
+            "keyTimeout": "按键超时（秒）",
+            "keyMapping": "按键映射",
+            "keyUnmapped": "未映射",
+            "varName": "变量名",
+            "varNamePlaceholder": "如 customerLevel",
+            "varValue": "变量值",
+            "persist": "持久化",
+            "persistText": "保存到 CDR",
+            "agentNo": "坐席工号",
+            "agentNoPlaceholder": "如 1001",
+            "noAnswerTimeout": "无人接听超时（秒）",
+            "fallback": "超时策略",
+            "fallbackHangup": "挂断",
+            "fallbackQueue": "转排队",
+            "fallbackVoicemail": "留言",
+            "skillGroupId": "技能组 ID",
+            "queueAudio": "排队提示音",
+            "queueAudioPlaceholder": "hold-music.wav",
+            "maxWaitSec": "最大等待秒数",
+            "strategy": "分配策略",
+            "stLeastBusy": "最闲优先",
+            "stRoundRobin": "轮询",
+            "stSkillBased": "技能优先",
+            "stPriority": "VIP 优先",
+            "judgeVar": "判断变量",
+            "judgeVarPlaceholder": "caller / level / hour",
+            "operator": "运算符",
+            "opEq": "等于  ==",
+            "opNeq": "不等于  !=",
+            "opContains": "包含  contains",
+            "opGt": "大于  >",
+            "opLt": "小于  <",
+            "opBetween": "区间  [a,b]",
+            "compareValue": "对比值",
+            "endVoice": "结束语音",
+            "endVoicePlaceholder": "bye.wav",
+            "hangupReason": "挂断原因",
+            "reasonNormal": "正常挂断",
+            "reasonBusy": "忙音",
+            "reasonReject": "拒接",
+            "reasonTimeout": "超时",
+            "coordinate": "坐标",
+            "deleteNode": "删除节点",
+            "edgeLabelLabel": "连线标签",
+            "edgeLabelPlaceholder": "如：按 1 / 工作时间 / 满足条件",
+            "edgePath": "路径",
+            "deleteEdge": "删除连线",
+            "nodeName": "节点名称"
+          },
+          "msg": {
+            "metaUnsetAudio": "未配置音频",
+            "metaUnsetText": "未配置文本",
+            "metaBranchSuffix": " 个分支",
+            "metaUnsetVar": "未配置变量",
+            "metaAgentPrefix": "工号 ",
+            "metaUnsetAgent": "未指定坐席",
+            "metaSkillPrefix": "技能组 ",
+            "metaUnsetSkill": "未指定技能组",
+            "warnHasStart": "已存在开始节点",
+            "warnNoSelfLoop": "不能连接到自身",
+            "warnEdgeExists": "已存在该连线",
+            "warnStartUndeletable": "开始节点不可删除",
+            "confirmClearTitle": "提示",
+            "confirmClearText": "确认清空当前画布？此操作不可撤销",
+            "confirmClearOk": "确认清空",
+            "warnNoStart": "画布无开始节点，无法布局",
+            "successAutoLayout": "已按层级自动布局",
+            "warnFlowName": "请填写流程名称",
+            "warnNoStartSave": "流程必须包含开始节点",
+            "menuPromptDefault": "请按键选择服务",
+            "jsonTitle": "流程定义 JSON"
+          },
+          "palette": {
+            "startLabel": "开始节点",
+            "startDesc": "流程入口",
+            "menuLabel": "菜单节点",
+            "menuDesc": "按键选择分支",
+            "playLabel": "播放语音",
+            "playDesc": "播放音频文件",
+            "ttsLabel": "语音合成",
+            "ttsDesc": "TTS 文本朗读",
+            "transferLabel": "转坐席",
+            "transferDesc": "指定工号接听",
+            "queueLabel": "转技能组",
+            "queueDesc": "排队分配坐席",
+            "conditionLabel": "条件判断",
+            "conditionDesc": "变量分支跳转",
+            "collectLabel": "变量赋值",
+            "collectDesc": "设置流程变量",
+            "hangupLabel": "挂断节点",
+            "hangupDesc": "结束通话"
+          },
+          "typeLabel": {
+            "start": "开始",
+            "play": "播放语音",
+            "menu": "按键菜单",
+            "collect": "变量赋值",
+            "transfer": "转坐席",
+            "queue": "转技能组",
+            "condition": "条件判断",
+            "hangup": "挂断",
+            "tts": "语音合成"
+          }
+        }`
+
+const EXTRA_SKILL_ZH = `,
+      "ext": {
+        "markEn": "SKILL · ACD",
+        "markCn": "技能组与智能路由",
+        "panelTitle": "技能组列表",
+        "panelHint": "ACD · 自动呼叫分配 · 队列管理",
+        "searchPlaceholder": "搜索技能组名称 / 编码",
+        "refreshBtn": "刷新",
+        "createBtn": "新建技能组",
+        "colSkill": "技能组",
+        "colStrategy": "分配策略",
+        "colMembers": "成员",
+        "colMemberUnit": "人",
+        "colCurrentQueue": "当前排队",
+        "colStatus": "状态",
+        "colCreatedAt": "创建时间",
+        "colOperation": "操作",
+        "btnEdit": "编辑",
+        "btnMembers": "成员管理",
+        "btnQueue": "排队设置",
+        "btnDelete": "删除",
+        "emptyText": "暂无技能组数据，点击右上角「新建技能组」开始配置",
+        "dlgEditTitle": "编辑技能组",
+        "dlgCreateTitle": "新建技能组",
+        "labelName": "技能组名称",
+        "phName": "例如：客服一组",
+        "labelCode": "技能组编码",
+        "phCode": "例如：cs-01（英文/数字/中划线）",
+        "labelDesc": "描述",
+        "phDesc": "一句话说明该技能组的服务范围，便于成员理解",
+        "labelStrategy": "分配策略",
+        "labelWeight": "基础权重",
+        "hintWeight": "权重越大被分配概率越高",
+        "labelPriority": "优先级",
+        "hintPriority": "数值越大优先级越高（1-10）",
+        "btnCancel": "取消",
+        "btnSave": "保存",
+        "memberDlgPrefix": "成员管理 · ",
+        "memberTip": "从全部坐席中勾选加入本技能组，支持工号 / 姓名筛选。已停用坐席不可加入。",
+        "filterAgent": "搜索工号或姓名",
+        "transferLeft": "可选坐席",
+        "transferRight": "已选坐席",
+        "btnRemove": "移除",
+        "btnAdd": "加入",
+        "btnSaveMember": "保存成员",
+        "memberUnit": "人",
+        "queueDlgPrefix": "排队规则 · ",
+        "labelMaxQueue": "最大排队数",
+        "labelTimeoutSec": "排队超时(秒)",
+        "labelTimeoutAction": "超时处理策略",
+        "actTransfer": "转其他技能组",
+        "actHangup": "提示后挂断",
+        "actVoicemail": "转语音留言",
+        "labelTransferTo": "目标技能组",
+        "phTransferTo": "选择转接的技能组",
+        "labelMusic": "排队音乐",
+        "labelAnnouncement": "排队公告语",
+        "phAnnouncement": "您前面还有 {n} 位客户在排队，请耐心等候…",
+        "labelOverflow": "溢出策略",
+        "ovReject": "直接拒接",
+        "ovVoicemail": "转留言",
+        "ovCallback": "回呼登记",
+        "btnSaveQueue": "保存规则",
+        "stat": {
+          "total": "总技能组数",
+          "active": "活跃技能组",
+          "agents": "总坐席数",
+          "queues": "当前总排队",
+          "unitGroup": "组",
+          "unitPerson": "人",
+          "unitCall": "通",
+          "trendTotal": "↑ 比上月 +2",
+          "trendActive": "在线服务中",
+          "trendAgents": "覆盖 4 个部门",
+          "trendQueues": "实时刷新"
+        },
+        "strategyOpt": {
+          "round_robin": "轮询",
+          "round_robin_desc": "按顺序依次分配，最朴素也最公平",
+          "longest_idle": "最长空闲",
+          "longest_idle_desc": "优先分配给空闲时间最久的坐席",
+          "skill_first": "技能优先",
+          "skill_first_desc": "按技能等级匹配最适合的坐席",
+          "random": "随机",
+          "random_desc": "完全随机抽选，分布均匀",
+          "weighted_round_robin": "加权轮询",
+          "weighted_round_robin_desc": "按权重比例进行轮询分配",
+          "least_calls": "最少通话",
+          "least_calls_desc": "今日通话量最少者优先",
+          "priority": "优先级",
+          "priority_desc": "按坐席预设优先级分配",
+          "memory_optimal": "内存最优",
+          "memory_optimal_desc": "综合评分动态选优"
+        },
+        "music": {
+          "default": "默认轻音乐",
+          "defaultMeta": "舒缓 · 30s 循环",
+          "canon": "古典 · 卡农",
+          "canonMeta": "Pachelbel",
+          "jazz": "爵士 · Smooth",
+          "jazzMeta": "Norah Jones 风格",
+          "brand": "品牌定制音效",
+          "brandMeta": "浙杭企服专属"
+        },
+        "msg": {
+          "validName": "请输入技能组名称",
+          "validCode": "请输入技能组编码",
+          "validStrategy": "请选择分配策略",
+          "updateSuccess": "技能组已更新",
+          "createSuccess": "技能组已创建",
+          "enableSuccess": "已启用",
+          "disableSuccess": "已停用",
+          "deleteConfirmText": "该操作不可恢复。",
+          "deleteTitle": "危险操作",
+          "deleteSuccess": "已删除",
+          "saveMemberOk": "已保存",
+          "agentsTo": "名坐席到",
+          "queueRuleSaved": "排队规则已保存"
+        }
+      }`
+
+// English equivalents
+const EXTRA_IVR_EN = `
+      "stats": {
+        "totalFlows": "Total Flows",
+        "onlineFlows": "Online",
+        "totalNodes": "Total Nodes"
+      },
+      "filter": {
+        "searchPlaceholder": "Search by flow name",
+        "statusPlaceholder": "Status filter",
+        "statusAll": "All Status"
+      },
+      "actionExt": {
+        "createBlank": "New Blank Flow",
+        "createFromTemplate": "From Template",
+        "refresh": "Refresh"
+      },
+      "list": {
+        "nodesEdges": "Nodes / Edges",
+        "updatedTime": "Updated Time",
+        "bindNumbers": "Bound",
+        "noDescription": "— No description —",
+        "emptyTip": "No flows yet, start from the top right",
+        "untitled": "Untitled Flow",
+        "startNodeName": "Start",
+        "copySuffix": " (Copy)",
+        "deleteTitle": "Delete Confirm",
+        "confirmDeleteBtn": "Confirm Delete",
+        "publishedOnline": "Published online",
+        "copyFailed": "Copy failed",
+        "templateLoadedPrefix": "Template loaded: ",
+        "heroEyebrow": "CALL CENTER · IVR ENGINE",
+        "heroTitleMain": "IVR Flow",
+        "heroTitleEm": "Designer Hub",
+        "heroSub": "Visual orchestration / Reusable templates / Collaborative publishing"
+      },
+      "tplFlow": {
+        "presaleName": "Pre-sales",
+        "presaleDesc": "Product / Pricing / Manual triage",
+        "presaleFlowName": "Pre-sales Flow",
+        "presaleWelcome": "Welcome to our pre-sales hotline",
+        "presaleMenu": "Press 1 for product, 2 for pricing, 0 for agent",
+        "presaleNodeWelcome": "Welcome",
+        "presaleNodeMain": "Main Menu",
+        "presaleNodeProduct": "Product Group",
+        "presaleNodePrice": "Price Advisor",
+        "presaleNodeManual": "Manual Service",
+        "presaleNodeEnd": "End",
+        "aftersaleName": "After-sales",
+        "aftersaleDesc": "Complaints / Repair / Returns",
+        "aftersaleFlowName": "After-sales Flow",
+        "aftersaleFlowDesc": "Complaints / Repair / Returns",
+        "aftersaleWelcome": "Welcome to after-sales center",
+        "aftersaleMenu": "Press 1 complaint, 2 repair, 3 returns, 0 agent",
+        "aftersaleNodeWelcome": "Welcome",
+        "aftersaleNodeLevel": "Customer Level",
+        "aftersaleNodeMenu": "After-sales Menu",
+        "aftersaleNodeComplaint": "Complaint",
+        "aftersaleNodeRepair": "Repair",
+        "aftersaleNodeReturn": "Returns",
+        "aftersaleNodeGeneral": "General",
+        "satisfactionName": "Satisfaction Survey",
+        "satisfactionDesc": "1-5 rating / notes / thanks hangup",
+        "satisfactionFlowName": "Satisfaction Survey Flow",
+        "satisfactionFlowDesc": "1-5 rating / thanks hangup",
+        "satisfactionTtsText": "Thanks for the survey, please rate 1-5 after the prompt",
+        "satisfactionMenu": "Press 1 to 5 to rate",
+        "satisfactionNodeGuide": "Guide",
+        "satisfactionNodeRating": "Rating",
+        "satisfactionNodeLow": "Low Score",
+        "satisfactionNodeHigh": "High Score",
+        "satisfactionNodeCallback": "Low-score Callback",
+        "satisfactionNodeThanks": "Thanks",
+        "satisfactionThanksText": "Thanks for your support, goodbye",
+        "satisfactionEdgeLow": "1-3 score",
+        "satisfactionEdgeHigh": "4-5 score",
+        "service24hName": "24h Service",
+        "service24hDesc": "Working hours / Off-hours routing",
+        "service24hFlowName": "24h Smart Routing",
+        "service24hFlowDesc": "Auto routing by time",
+        "service24hNodeHour": "Current Hour",
+        "service24hNodeJudge": "Time Judge",
+        "service24hNodeWorkWelcome": "Working Welcome",
+        "service24hWorkText": "Welcome, connecting to agent",
+        "service24hNodeWorkQueue": "Queue",
+        "service24hNodeOff": "Off Hours",
+        "service24hOffText": "Off-hours, please leave a message",
+        "service24hNodeRecord": "Record",
+        "service24hNodeBye": "Thanks Hangup",
+        "service24hByeText": "Thanks, will call back on workdays",
+        "service24hEdgeWork": "Working",
+        "service24hEdgeOff": "Off-hours",
+        "edgeKey1": "Press 1",
+        "edgeKey2": "Press 2",
+        "edgeKey3": "Press 3",
+        "edgeKey0": "Press 0"
+      },
+`
+
+const EXTRA_DESIGNER_EN = `,
+        "extra": {
+          "backToList": "Back to list",
+          "namePlaceholder": "Enter flow name",
+          "draftStatus": "Draft",
+          "publishedStatus": "Published",
+          "tipAutoLayout": "Auto Layout",
+          "tipClearCanvas": "Clear Canvas",
+          "tipJsonPreview": "JSON Preview",
+          "saveBtn": "Save Flow",
+          "secNodeComponents": "Node Components",
+          "secFlowStats": "Flow Stats",
+          "statNodes": "Nodes",
+          "statEdges": "Edges",
+          "helperDrag": "Drag",
+          "helperDragText": "node from left into canvas",
+          "helperPort": "Click port",
+          "helperPortText": "to drag a connection",
+          "helperBlank": "Drag blank",
+          "helperBlankText": "to pan canvas",
+          "helperDelete": "Delete",
+          "helperDeleteText": "to remove selected",
+          "watermark": "IVR · BLUEPRINT",
+          "secProperties": "Properties",
+          "emptyTitle": "Select a node or edge",
+          "emptySubtitle": "to edit properties",
+          "emptyTip": "Tip: drag from left to create a new node",
+          "edgeLabel": "Edge",
+          "form": {
+            "audioFile": "Audio File",
+            "audioPlaceholder": "welcome.wav",
+            "remarkText": "Remark Text",
+            "remarkPlaceholder": "Description for the audio",
+            "ttsText": "TTS Text",
+            "ttsPlaceholder": "Enter synthesis text",
+            "voice": "Voice",
+            "voiceFemaleStd": "Female · Standard",
+            "voiceMaleStd": "Male · Standard",
+            "voiceFemaleSoft": "Female · Soft",
+            "voiceMaleDeep": "Male · Deep",
+            "menuPrompt": "Menu Prompt",
+            "keyTimeout": "Key Timeout (sec)",
+            "keyMapping": "Key Mapping",
+            "keyUnmapped": "Unmapped",
+            "varName": "Variable Name",
+            "varNamePlaceholder": "e.g. customerLevel",
+            "varValue": "Variable Value",
+            "persist": "Persist",
+            "persistText": "Save to CDR",
+            "agentNo": "Agent No.",
+            "agentNoPlaceholder": "e.g. 1001",
+            "noAnswerTimeout": "No-answer Timeout (sec)",
+            "fallback": "Fallback",
+            "fallbackHangup": "Hangup",
+            "fallbackQueue": "Queue",
+            "fallbackVoicemail": "Voicemail",
+            "skillGroupId": "Skill Group ID",
+            "queueAudio": "Queue Audio",
+            "queueAudioPlaceholder": "hold-music.wav",
+            "maxWaitSec": "Max Wait Seconds",
+            "strategy": "Strategy",
+            "stLeastBusy": "Least Busy",
+            "stRoundRobin": "Round Robin",
+            "stSkillBased": "Skill-based",
+            "stPriority": "VIP Priority",
+            "judgeVar": "Judge Variable",
+            "judgeVarPlaceholder": "caller / level / hour",
+            "operator": "Operator",
+            "opEq": "Equals  ==",
+            "opNeq": "Not Equals  !=",
+            "opContains": "Contains",
+            "opGt": "Greater  >",
+            "opLt": "Less  <",
+            "opBetween": "Between  [a,b]",
+            "compareValue": "Compare Value",
+            "endVoice": "End Voice",
+            "endVoicePlaceholder": "bye.wav",
+            "hangupReason": "Hangup Reason",
+            "reasonNormal": "Normal",
+            "reasonBusy": "Busy",
+            "reasonReject": "Rejected",
+            "reasonTimeout": "Timeout",
+            "coordinate": "Coordinate",
+            "deleteNode": "Delete Node",
+            "edgeLabelLabel": "Edge Label",
+            "edgeLabelPlaceholder": "e.g. Press 1 / Working / Match",
+            "edgePath": "Path",
+            "deleteEdge": "Delete Edge",
+            "nodeName": "Node Name"
+          },
+          "msg": {
+            "metaUnsetAudio": "No audio configured",
+            "metaUnsetText": "No text configured",
+            "metaBranchSuffix": " branches",
+            "metaUnsetVar": "No variable configured",
+            "metaAgentPrefix": "Agent ",
+            "metaUnsetAgent": "No agent specified",
+            "metaSkillPrefix": "Skill ",
+            "metaUnsetSkill": "No skill specified",
+            "warnHasStart": "Start node already exists",
+            "warnNoSelfLoop": "Cannot connect to itself",
+            "warnEdgeExists": "Edge already exists",
+            "warnStartUndeletable": "Start node cannot be deleted",
+            "confirmClearTitle": "Tip",
+            "confirmClearText": "Clear current canvas? Cannot be undone",
+            "confirmClearOk": "Clear",
+            "warnNoStart": "No start node, cannot layout",
+            "successAutoLayout": "Auto layout done",
+            "warnFlowName": "Please enter flow name",
+            "warnNoStartSave": "Flow must contain a start node",
+            "menuPromptDefault": "Press a key to choose",
+            "jsonTitle": "Flow Definition JSON"
+          },
+          "palette": {
+            "startLabel": "Start",
+            "startDesc": "Flow entry",
+            "menuLabel": "Menu",
+            "menuDesc": "Branch by key",
+            "playLabel": "Play Audio",
+            "playDesc": "Play audio file",
+            "ttsLabel": "TTS",
+            "ttsDesc": "Text to speech",
+            "transferLabel": "Transfer",
+            "transferDesc": "To specific agent",
+            "queueLabel": "Queue",
+            "queueDesc": "Queue to skill group",
+            "conditionLabel": "Condition",
+            "conditionDesc": "Branch by variable",
+            "collectLabel": "Collect",
+            "collectDesc": "Set variable",
+            "hangupLabel": "Hangup",
+            "hangupDesc": "End call"
+          },
+          "typeLabel": {
+            "start": "Start",
+            "play": "Play Audio",
+            "menu": "Key Menu",
+            "collect": "Collect",
+            "transfer": "Transfer",
+            "queue": "Queue",
+            "condition": "Condition",
+            "hangup": "Hangup",
+            "tts": "TTS"
+          }
+        }`
+
+const EXTRA_SKILL_EN = `,
+      "ext": {
+        "markEn": "SKILL · ACD",
+        "markCn": "Skill Group & Smart Routing",
+        "panelTitle": "Skill Groups",
+        "panelHint": "ACD · Auto Call Distribution · Queue Mgmt",
+        "searchPlaceholder": "Search by name / code",
+        "refreshBtn": "Refresh",
+        "createBtn": "New Skill Group",
+        "colSkill": "Skill Group",
+        "colStrategy": "Strategy",
+        "colMembers": "Members",
+        "colMemberUnit": "people",
+        "colCurrentQueue": "Queue",
+        "colStatus": "Status",
+        "colCreatedAt": "Created",
+        "colOperation": "Action",
+        "btnEdit": "Edit",
+        "btnMembers": "Members",
+        "btnQueue": "Queue",
+        "btnDelete": "Delete",
+        "emptyText": "No skill groups, click \\"New Skill Group\\" to create",
+        "dlgEditTitle": "Edit Skill Group",
+        "dlgCreateTitle": "New Skill Group",
+        "labelName": "Group Name",
+        "phName": "e.g. Service Group 1",
+        "labelCode": "Group Code",
+        "phCode": "e.g. cs-01 (alphanumeric/dash)",
+        "labelDesc": "Description",
+        "phDesc": "One sentence description",
+        "labelStrategy": "Strategy",
+        "labelWeight": "Base Weight",
+        "hintWeight": "Higher weight, higher chance",
+        "labelPriority": "Priority",
+        "hintPriority": "Higher value, higher priority (1-10)",
+        "btnCancel": "Cancel",
+        "btnSave": "Save",
+        "memberDlgPrefix": "Members · ",
+        "memberTip": "Pick agents, supports filtering by ID/name. Disabled agents excluded.",
+        "filterAgent": "Search ID or name",
+        "transferLeft": "Available",
+        "transferRight": "Selected",
+        "btnRemove": "Remove",
+        "btnAdd": "Add",
+        "btnSaveMember": "Save Members",
+        "memberUnit": "people",
+        "queueDlgPrefix": "Queue Rule · ",
+        "labelMaxQueue": "Max Queue",
+        "labelTimeoutSec": "Timeout (sec)",
+        "labelTimeoutAction": "Timeout Action",
+        "actTransfer": "Transfer to other group",
+        "actHangup": "Prompt then hangup",
+        "actVoicemail": "Voicemail",
+        "labelTransferTo": "Target Group",
+        "phTransferTo": "Select target group",
+        "labelMusic": "Queue Music",
+        "labelAnnouncement": "Queue Announcement",
+        "phAnnouncement": "There are still {n} customers ahead, please wait...",
+        "labelOverflow": "Overflow",
+        "ovReject": "Reject",
+        "ovVoicemail": "Voicemail",
+        "ovCallback": "Callback",
+        "btnSaveQueue": "Save Rule",
+        "stat": {
+          "total": "Total Groups",
+          "active": "Active Groups",
+          "agents": "Total Agents",
+          "queues": "Current Queue",
+          "unitGroup": "groups",
+          "unitPerson": "people",
+          "unitCall": "calls",
+          "trendTotal": "↑ +2 vs last month",
+          "trendActive": "Online",
+          "trendAgents": "4 departments",
+          "trendQueues": "Real-time"
+        },
+        "strategyOpt": {
+          "round_robin": "Round Robin",
+          "round_robin_desc": "Sequential, fair and even",
+          "longest_idle": "Longest Idle",
+          "longest_idle_desc": "Agent idle longest first",
+          "skill_first": "Skill First",
+          "skill_first_desc": "Match by skill level",
+          "random": "Random",
+          "random_desc": "Random pick, even distribution",
+          "weighted_round_robin": "Weighted RR",
+          "weighted_round_robin_desc": "Weighted round robin",
+          "least_calls": "Least Calls",
+          "least_calls_desc": "Today's least calls first",
+          "priority": "Priority",
+          "priority_desc": "By preset priority",
+          "memory_optimal": "Optimal",
+          "memory_optimal_desc": "Best dynamic score"
+        },
+        "music": {
+          "default": "Default Light Music",
+          "defaultMeta": "Soothing · 30s loop",
+          "canon": "Classical · Canon",
+          "canonMeta": "Pachelbel",
+          "jazz": "Jazz · Smooth",
+          "jazzMeta": "Norah Jones style",
+          "brand": "Brand Music",
+          "brandMeta": "Custom"
+        },
+        "msg": {
+          "validName": "Please enter group name",
+          "validCode": "Please enter group code",
+          "validStrategy": "Please select strategy",
+          "updateSuccess": "Skill group updated",
+          "createSuccess": "Skill group created",
+          "enableSuccess": "Enabled",
+          "disableSuccess": "Disabled",
+          "deleteConfirmText": "This cannot be undone.",
+          "deleteTitle": "Dangerous Operation",
+          "deleteSuccess": "Deleted",
+          "saveMemberOk": "Saved",
+          "agentsTo": "agents to",
+          "queueRuleSaved": "Queue rule saved"
+        }
+      }`
+
+function patchLocale(filePath, ivrExtras, designerExtras, skillExtras) {
+  let txt = fs.readFileSync(filePath, 'utf8')
+
+  // Insert ivr stats/filter/actionExt/list/tplFlow BEFORE existing ivr "action": (cleanest: just after "eyebrow" line within ivr block)
+  // The cc.ivr block starts with "ivr": { then "title", "subtitle", "eyebrow"
+  // We insert after the "eyebrow" line.
+  const ivrRe = new RegExp('("ivr": \\{\\s*\\n\\s*"title":[^\\n]+\\n\\s*"subtitle":[^\\n]+\\n\\s*"eyebrow":[^\\n]+\\n)')
+  txt = txt.replace(ivrRe, (m) => m + ivrExtras)
+
+  // Insert designer extra: just before the closing brace of "designer" block
+  // The designer block ends with the "message" sub-object's closing brace, then "}" for designer
+  // Strategy: inside designer, after the existing "message" sub-block's closing "}", inject our "extra" key.
+  // Find "message": {...} within designer and append after the closing brace.
+  // We do a more targeted approach: locate "designer": { then find the matching closing brace and insert before it.
+  txt = patchDesignerBlock(txt, designerExtras)
+
+  // Insert skill ext: before the closing brace of "skill" block
+  txt = patchSkillBlock(txt, skillExtras)
+
+  fs.writeFileSync(filePath, txt, 'utf8')
+}
+
+function patchDesignerBlock(txt, designerExtras) {
+  // Locate "designer": { ... }
+  const idx = txt.indexOf('"designer":')
+  if (idx === -1) return txt
+  // Find opening brace
+  const openBrace = txt.indexOf('{', idx)
+  let depth = 0
+  let i = openBrace
+  for (; i < txt.length; i++) {
+    if (txt[i] === '{') depth++
+    else if (txt[i] === '}') {
+      depth--
+      if (depth === 0) break
+    }
+  }
+  // i points to closing brace of designer
+  // Insert before this closing brace.
+  // The existing content already has trailing ',' style — designerExtras starts with comma-newline-spaces
+  // Find the last non-whitespace char before i, and ensure we don't double-comma
+  let j = i - 1
+  while (j > 0 && /\s/.test(txt[j])) j--
+  // If the char at j is '}', the previous block was an object — insert comma+extras
+  return txt.slice(0, j + 1) + designerExtras + txt.slice(j + 1)
+}
+
+function patchSkillBlock(txt, skillExtras) {
+  const idx = txt.indexOf('"skill":')
+  if (idx === -1) return txt
+  const openBrace = txt.indexOf('{', idx)
+  let depth = 0
+  let i = openBrace
+  for (; i < txt.length; i++) {
+    if (txt[i] === '{') depth++
+    else if (txt[i] === '}') {
+      depth--
+      if (depth === 0) break
+    }
+  }
+  let j = i - 1
+  while (j > 0 && /\s/.test(txt[j])) j--
+  return txt.slice(0, j + 1) + skillExtras + txt.slice(j + 1)
+}
+
+console.log('Patching cc-zh-CN.ts...')
+patchLocale(LOCALE_ZH, EXTRA_IVR_ZH, EXTRA_DESIGNER_ZH, EXTRA_SKILL_ZH)
+console.log('Patching cc-en-US.ts...')
+patchLocale(LOCALE_EN, EXTRA_IVR_EN, EXTRA_DESIGNER_EN, EXTRA_SKILL_EN)
+console.log('Locale files patched.')

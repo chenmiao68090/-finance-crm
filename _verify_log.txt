@@ -1,0 +1,72 @@
+===== Dockerfile =====
+# syntax=docker/dockerfile:1.6
+# =============================================================
+# Stage 1: builder - 编译 Spring Boot 多模块项目
+# =============================================================
+FROM maven:3.9-eclipse-temurin-17 AS builder
+
+WORKDIR /build
+
+# 配置阿里云 Maven 镜像加速依赖下载（中国大陆环境）
+RUN mkdir -p /root/.m2 && \
+    printf '%s\n' \
+      '<?xml version="1.0" encoding="UTF-8"?>' \
+      '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"' \
+      '          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' \
+      '          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">' \
+      '  <mirrors>' \
+      '    <mirror>' \
+      '      <id>aliyunmaven</id>' \
+      '      <mirrorOf>*</mirrorOf>' \
+      '      <name>aliyun public</name>' \
+      '      <url>https://maven.aliyun.com/repository/public</url>' \
+      '    </mirror>' \
+      '  </mirrors>' \
+      '</settings>' \
+      > /root/.m2/settings.xml
+
+# 复制全部源码（依赖父 pom 与子模块 pom 的相对关系，简化策略一次性 COPY）
+COPY . .
+
+# 仅构建 admin 模块及其依赖（-am 同时构建依赖模块），跳过测试
+RUN mvn -B clean package -DskipTests -pl zhehang-erp-admin -am
+
+# =============================================================
+# Stage 2: runtime - 运行可执行 jar
+# =============================================================
+FROM eclipse-temurin:17-jre AS runtime
+
+WORKDIR /app
+
+# 设置时区为 Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone
+
+ENV TZ=Asia/Shanghai \
+    LANG=C.UTF-8 \
+    JAVA_OPTS="-Xms256m -Xmx512m -Dfile.encoding=UTF-8 -Duser.timezone=Asia/Shanghai"
+
+# 从 builder 阶段拷贝可执行 jar
+COPY --from=builder /build/zhehang-erp-admin/target/zhehang-erp-admin-1.0.0-SNAPSHOT.jar /app/app.jar
+
+EXPOSE 8080
+
+# 使用 sh -c 形式展开 JAVA_OPTS 环境变量
+ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar /app/app.jar"]
+
+===== .dockerignore =====
+**/target/
+**/*.iml
+**/.idea/
+**/.vscode/
+**/node_modules/
+**/.git/
+**/.DS_Store
+*.log
+
+===== Verification =====
+Has builder FROM: true
+Has runtime FROM: true
+Has aliyun mirror: true
+Has mvn -pl admin -am: true
+Has ENTRYPOINT: true

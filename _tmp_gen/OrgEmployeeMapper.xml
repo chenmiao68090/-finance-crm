@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhehang.erp.modules.org.mapper.OrgEmployeeMapper">
+
+    <resultMap id="EmployeeVOMap" type="com.zhehang.erp.modules.org.domain.vo.EmployeeVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="birth_date" property="birthDate"/>
+        <result column="id_card" property="idCard"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="dept_name" property="deptName"/>
+        <result column="post_id" property="postId"/>
+        <result column="post_name" property="postName"/>
+        <result column="hire_date" property="hireDate"/>
+        <result column="regular_date" property="regularDate"/>
+        <result column="contract_start" property="contractStart"/>
+        <result column="contract_end" property="contractEnd"/>
+        <result column="education" property="education"/>
+        <result column="university" property="university"/>
+        <result column="major" property="major"/>
+        <result column="emergency_contact" property="emergencyContact"/>
+        <result column="emergency_phone" property="emergencyPhone"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectEmployeePage" resultMap="EmployeeVOMap">
+        SELECT e.*, d.dept_name, p.post_name
+        FROM org_employee e
+        LEFT JOIN sys_dept d ON e.dept_id = d.id AND d.deleted = 0
+        LEFT JOIN org_post p ON e.post_id = p.id AND p.deleted = 0
+        WHERE e.deleted = 0
+        <if test="name != null and name != ''">
+            AND e.name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="deptId != null">
+            AND e.dept_id = #{deptId}
+        </if>
+        <if test="postId != null">
+            AND e.post_id = #{postId}
+        </if>
+        <if test="status != null">
+            AND e.status = #{status}
+        </if>
+        ORDER BY e.create_time DESC
+    </select>
+
+    <select id="selectEmployeeById" resultMap="EmployeeVOMap">
+        SELECT e.*, d.dept_name, p.post_name
+        FROM org_employee e
+        LEFT JOIN sys_dept d ON e.dept_id = d.id AND d.deleted = 0
+        LEFT JOIN org_post p ON e.post_id = p.id AND p.deleted = 0
+        WHERE e.id = #{id} AND e.deleted = 0
+    </select>
+
+    <select id="countByDeptId" resultType="int">
+        SELECT COUNT(*) FROM org_employee
+        WHERE dept_id = #{deptId} AND deleted = 0 AND status != 3
+    </select>
+
+</mapper>

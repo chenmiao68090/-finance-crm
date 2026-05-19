@@ -1012,6 +1012,7 @@ const LeadsUI = {
                     <div class="detail-card-header">
                         <h3>基本信息</h3>
                         <div class="detail-actions">
+                            ${lead.contact_phone ? `<button class="btn-outline btn-call-lead" data-lead-id="${lead.lead_id}" data-phone="${escapeHtml(lead.contact_phone)}" style="color:#10b981;border-color:rgba(16,185,129,0.5);"><i class="fa-solid fa-phone"></i> 拨号</button>` : ''}
                             <button class="btn-outline btn-edit-lead" data-lead-id="${lead.lead_id}"><i class="fa-solid fa-pen"></i> 编辑</button>
                             ${canConvert ? `<button class="btn-accent btn-convert-lead" data-lead-id="${lead.lead_id}" style="background:linear-gradient(135deg,#10b981,#059669);"><i class="fa-solid fa-handshake"></i> 转化</button>` : ''}
                             <button class="btn-outline btn-return-lead" data-lead-id="${lead.lead_id}" style="color:#ef4444;border-color:#ef4444;"><i class="fa-solid fa-rotate-left"></i> 退回</button>
@@ -1077,7 +1078,49 @@ const LeadsUI = {
                         </div>`;
             });
         }
-        html += '</div></div></div></div>';
+        html += '</div></div>'; // 关闭 follow-timeline + detail-card
+
+        // ===== 关联通话记录（与呼叫中心集成）=====
+        if (typeof CallRecordStorage !== 'undefined') {
+            const leadPhone = lead.contact_phone || lead.phone || lead.mobile || '';
+            let records = [];
+            try {
+                records = leadPhone
+                    ? CallRecordStorage.getAll().filter(r => r.caller_no === leadPhone || r.callee_no === leadPhone).slice(0, 5)
+                    : [];
+            } catch (e) { records = []; }
+            html += '<div class="detail-card" style="margin-top:16px;">';
+            html += '  <div class="detail-card-header">';
+            html += '    <h3><i class="fa-solid fa-phone-volume" style="color:#d4af37;"></i> 通话记录</h3>';
+            if (leadPhone) {
+                html += '    <div class="detail-actions"><button class="btn-outline btn-call-lead" data-lead-id="' + lead.lead_id + '" data-phone="' + escapeHtml(leadPhone) + '" style="color:#10b981;border-color:rgba(16,185,129,0.5);"><i class="fa-solid fa-phone"></i> 立即拨号</button></div>';
+            }
+            html += '  </div>';
+            html += '  <div class="leads-call-records" style="padding:8px 0;">';
+            if (!leadPhone) {
+                html += '<div style="padding:16px;text-align:center;color:#94a3b8;font-size:12px;">该线索未填写联系电话</div>';
+            } else if (records.length === 0) {
+                html += '<div style="padding:16px;text-align:center;color:#94a3b8;font-size:12px;">暂无关联的通话记录</div>';
+            } else {
+                records.forEach(r => {
+                    const startMs = r.start_time || r.started_at || r.created_at || Date.now();
+                    const dur = (typeof r.duration === 'number') ? r.duration : (r.talk_duration || 0);
+                    const durText = (typeof window.ccFormatDuration === 'function') ? window.ccFormatDuration(dur) : (dur + 's');
+                    const isInbound = r.call_type === 1;
+                    const isAnswered = r.status === 1;
+                    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;">';
+                    html += '<span style="color:#A0A0B0;flex:1;"><i class="fa-solid fa-clock" style="margin-right:6px;opacity:.6;"></i>' + new Date(startMs).toLocaleString('zh-CN') + '</span>';
+                    html += '<span style="color:' + (isInbound ? '#00D084' : '#5B8DEF') + ';width:64px;text-align:center;"><i class="fa-solid ' + (isInbound ? 'fa-arrow-down-long' : 'fa-arrow-up-long') + '"></i> ' + (isInbound ? '呼入' : '呼出') + '</span>';
+                    html += '<span style="color:#D4AF37;width:80px;text-align:center;font-family:monospace;">' + durText + '</span>';
+                    html += '<span style="color:' + (isAnswered ? '#00D084' : '#FF4D4F') + ';width:72px;text-align:right;">' + (isAnswered ? '已接通' : '未接通') + '</span>';
+                    html += '</div>';
+                });
+            }
+            html += '  </div>';
+            html += '</div>';
+        }
+
+        html += '</div></div>'; // 关闭 lead-detail-right + lead-detail-layout
         return html;
     },
 
@@ -1267,6 +1310,23 @@ const LeadsUI = {
             // 编辑线索（详情页）
             const editLeadBtn = e.target.closest('.btn-edit-lead');
             if (editLeadBtn) { this.showLeadModal(editLeadBtn.dataset.leadId); return; }
+
+            // 拨号按钮——联动呼叫中心软电话
+            const callLeadBtn = e.target.closest('.btn-call-lead');
+            if (callLeadBtn) {
+                const phone = callLeadBtn.dataset.phone || '';
+                const lid = callLeadBtn.dataset.leadId;
+                const ld = lid ? LeadStorage.getById(lid) : null;
+                const customerName = ld ? (ld.contact_name || ld.lead_name || '') : '';
+                if (!phone) { showToast('该线索未填写联系电话', 'warning'); return; }
+                if (typeof window.ccClickToDial === 'function') {
+                    window.ccClickToDial(phone, customerName);
+                } else {
+                    // 降级方案：调起系统 tel: 协议
+                    try { window.open('tel:' + phone); } catch (err) { showToast('未检测到呼叫中心模块', 'warning'); }
+                }
+                return;
+            }
 
             // ===== 规则设置页交互 =====
             // 保存自动分配规则

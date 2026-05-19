@@ -1,0 +1,7 @@
+﻿[Lead interface + FollowUpRecord] OK
+[reactive vars + computed + functions] OK
+[follow/edit button click] OK
+[insert follow-up dialog] OK
+
+Written. CRLF: true  length: 41508
+Line count: 1107

@@ -1,0 +1,1034 @@
+<template>
+  <div class="lead-page">
+    <!-- 顶部 Tab 切换 -->
+    <div class="page-header">
+      <el-tabs v-model="activeTab" class="lead-tabs" @tab-change="handleTabChange">
+        <el-tab-pane label="公司公海" name="pool" />
+        <el-tab-pane label="我的线索" name="my" />
+      </el-tabs>
+    </div>
+
+    <!-- 筛选搜索区 -->
+    <div class="filter-bar">
+      <div class="filter-left">
+        <el-select v-model="queryParams.source" placeholder="来源" clearable style="width: 120px">
+          <el-option label="天眼查平台" :value="1" />
+          <el-option label="老客户转介绍" :value="2" />
+          <el-option label="运营-美团" :value="3" />
+          <el-option label="运营-抖音" :value="4" />
+          <el-option label="线下来客" :value="5" />
+        </el-select>
+        <el-select v-model="queryParams.status" placeholder="跟进状态" clearable style="width: 120px">
+          <el-option label="0新建客户" :value="1" />
+          <el-option label="A初步接洽" :value="2" />
+          <el-option label="B需求确认" :value="3" />
+          <el-option label="C方案报价" :value="4" />
+          <el-option label="D谈判审核" :value="5" />
+          <el-option label="E成交" :value="6" />
+        </el-select>
+        <el-input
+          v-model="queryParams.keyword"
+          placeholder="公司名称 / 手机号"
+          clearable
+          style="width: 240px"
+          @keyup.enter="handleSearch"
+        >
+          <template #prefix><el-icon><Search /></el-icon></template>
+        </el-input>
+        <el-button type="primary" plain @click="handleSearch">查询</el-button>
+        <el-button plain @click="handleReset">重置</el-button>
+      </div>
+      <div class="filter-right">
+        <el-button type="primary" @click="openCreate">
+          <el-icon><Plus /></el-icon>新建
+        </el-button>
+        <el-dropdown trigger="click" @command="handleMore">
+          <el-button plain>
+            更多<el-icon class="el-icon--right"><ArrowDown /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="import"><el-icon><Upload /></el-icon>导入线索</el-dropdown-item>
+              <el-dropdown-item command="export"><el-icon><Download /></el-icon>导出线索</el-dropdown-item>
+              <el-dropdown-item divided command="rules"><el-icon><Setting /></el-icon>设置公海规则</el-dropdown-item>
+              <el-dropdown-item command="duplicate"><el-icon><Search /></el-icon>查重工具</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
+    </div>
+
+    <!-- 批量操作栏 -->
+    <div v-if="selectedRows.length > 0" class="batch-bar">
+      <span class="batch-info">已选 <em>{{ selectedRows.length }}</em> 条</span>
+      <div class="batch-actions">
+        <template v-if="activeTab === 'pool'">
+          <el-button type="primary" size="small" @click="handleClaim">领取</el-button>
+          <el-button size="small" @click="openDistribute">分配</el-button>
+        </template>
+        <template v-else-if="activeTab === 'my'">
+          <el-button size="small" @click="openReturnPool">退回公海</el-button>
+          <el-button type="danger" size="small" @click="handleBatchDelete">删除</el-button>
+        </template>
+        <el-button text @click="clearSelection">取消选择</el-button>
+      </div>
+    </div>
+
+    <!-- 数据表格 -->
+    <div class="table-wrap">
+      <el-table
+        ref="tableRef"
+        v-loading="loading"
+        :data="filteredList"
+        stripe
+        border
+        height="calc(100vh - 320px)"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="50" />
+        <el-table-column label="公司名称" prop="name" min-width="140">
+          <template #default="{ row }">
+            <a class="link-text" @click="openEdit(row)">{{ row.name }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column label="联系人" prop="company" min-width="180" show-overflow-tooltip />
+        <el-table-column label="联系电话" prop="phone" width="140" />
+        <el-table-column prop="registerDate" label="公司注册日期" width="130" />
+        <el-table-column label="来源" width="100">
+          <template #default="{ row }">
+            <el-tag :type="sourceTagType(row.source)" effect="dark">{{ sourceLabel(row.source) }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="跟进状态" width="100">
+          <template #default="{ row }">
+            <el-tag :type="statusTagType(row.status)" effect="plain">{{ statusLabel(row.status) }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="负责人" prop="ownerName" width="110">
+          <template #default="{ row }">
+            <span v-if="row.ownerName">{{ row.ownerName }}</span>
+            <span v-else class="muted">— 公海 —</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="最近跟进" prop="lastFollowTime" width="160" />
+        <el-table-column label="创建时间" prop="createTime" width="160" />
+        <el-table-column label="操作" width="280" fixed="right">
+          <template #default="{ row }">
+            <el-button v-if="activeTab === 'pool'" size="small" type="primary" link @click="handleClaimSingle(row)">领取</el-button>
+            <el-button size="small" link @click="openEdit(row)">{{ activeTab === 'my' ? '跟进' : '编辑' }}</el-button>
+            <el-button v-if="activeTab === 'my'" size="small" type="success" link :disabled="row.status === 6" @click="handleDeal(row)">成交</el-button>
+            <el-button v-if="activeTab === 'my'" size="small" type="warning" link @click="handleReturnToPool(row)">放回公海</el-button>
+            <el-button v-if="activeTab === 'pool'" size="small" type="danger" link @click="handleDelete(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <div class="pagination-wrap">
+        <el-pagination
+          v-model:current-page="queryParams.page"
+          v-model:page-size="queryParams.size"
+          :page-sizes="[10, 20, 50, 100]"
+          :total="totalCount"
+          layout="total, sizes, prev, pager, next, jumper"
+          background
+        />
+      </div>
+    </div>
+
+    <!-- 新增 / 编辑弹窗 -->
+    <el-dialog v-model="formDialog.visible" :title="formDialog.isEdit ? '编辑线索' : '新建线索'" width="640px" destroy-on-close>
+      <el-form ref="formRef" :model="formData" :rules="formRules" label-width="100px">
+        <el-row :gutter="16">
+          <el-col :span="12">
+            <el-form-item label="公司名称" prop="name">
+              <el-input v-model="formData.name" placeholder="请输入公司名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系人" prop="company">
+              <el-input v-model="formData.company" placeholder="请输入联系人姓名" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="联系电话" prop="phone">
+              <el-input v-model="formData.phone" placeholder="请输入手机号" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="公司注册日期">
+              <el-date-picker v-model="formData.registerDate" type="date" placeholder="选择日期" value-format="YYYY-MM-DD" style="width: 100%" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="公司地址" prop="email">
+              <el-input v-model="formData.email" placeholder="请输入公司地址" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="来源" prop="source">
+              <el-select v-model="formData.source" placeholder="请选择来源" style="width: 100%">
+                <el-option label="天眼查平台" :value="1" />
+                <el-option label="老客户转介绍" :value="2" />
+                <el-option label="运营-美团" :value="3" />
+                <el-option label="运营-抖音" :value="4" />
+                <el-option label="线下来客" :value="5" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="备注" prop="remark">
+              <el-input v-model="formData.remark" type="textarea" :rows="3" placeholder="补充信息" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <template #footer>
+        <el-button @click="formDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm">保存</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 分配弹窗 -->
+    <el-dialog v-model="distributeDialog.visible" title="分配线索" width="420px">
+      <el-form label-width="90px">
+        <el-form-item label="负责人">
+          <el-select v-model="distributeDialog.ownerId" placeholder="请选择负责人" style="width: 100%">
+            <el-option v-for="u in mockUsers" :key="u.id" :label="u.name" :value="u.id" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="distributeDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="submitDistribute">确认分配</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 退回公海弹窗 -->
+    <el-dialog v-model="returnDialog.visible" title="退回公海" width="420px">
+      <el-form label-width="90px">
+        <el-form-item label="退回原因">
+          <el-input v-model="returnDialog.reason" type="textarea" :rows="3" placeholder="请输入退回原因" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="returnDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="submitReturn">确认退回</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 公海规则设置弹窗 -->
+    <el-dialog v-model="rulesDialog.visible" title="公海规则设置" width="800px" top="6vh">
+      <el-tabs v-model="rulesDialog.activeTab" class="rules-inner-tabs">
+        <el-tab-pane label="分配规则" name="distribute">
+          <el-table :data="rulesDialog.distributeRules" border>
+            <el-table-column label="规则名称" min-width="140">
+              <template #default="{ row }">
+                <el-input v-model="row.name" size="small" placeholder="规则名称" />
+              </template>
+            </el-table-column>
+            <el-table-column label="触发条件" width="140">
+              <template #default="{ row }">
+                <el-select v-model="row.trigger" size="small" style="width: 100%">
+                  <el-option label="新建线索" value="onCreate" />
+                  <el-option label="进入公海" value="onPool" />
+                  <el-option label="导入时" value="onImport" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="分配方式" width="130">
+              <template #default="{ row }">
+                <el-select v-model="row.mode" size="small" style="width: 100%">
+                  <el-option label="轮询" value="round" />
+                  <el-option label="按地区" value="region" />
+                  <el-option label="指定人员" value="specify" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="分配对象" min-width="140">
+              <template #default="{ row }">
+                <el-input v-model="row.target" size="small" placeholder="销售/部门" />
+              </template>
+            </el-table-column>
+            <el-table-column label="最大保有量" width="110">
+              <template #default="{ row }">
+                <el-input-number v-model="row.maxHold" :min="0" size="small" controls-position="right" style="width: 100%" />
+              </template>
+            </el-table-column>
+            <el-table-column label="优先级" width="90">
+              <template #default="{ row }">
+                <el-input-number v-model="row.priority" :min="1" :max="99" size="small" controls-position="right" style="width: 100%" />
+              </template>
+            </el-table-column>
+            <el-table-column label="启用" width="70">
+              <template #default="{ row }">
+                <el-switch v-model="row.enabled" />
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="70" fixed="right">
+              <template #default="{ $index }">
+                <el-button type="danger" link size="small" @click="rulesDialog.distributeRules.splice($index, 1)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="rule-add-bar">
+            <el-button plain size="small" @click="addDistributeRule"><el-icon><Plus /></el-icon>添加规则</el-button>
+          </div>
+        </el-tab-pane>
+
+        <el-tab-pane label="自动回收规则" name="recycle">
+          <el-table :data="rulesDialog.recycleRules" border>
+            <el-table-column label="规则名称" min-width="140">
+              <template #default="{ row }">
+                <el-input v-model="row.name" size="small" placeholder="规则名称" />
+              </template>
+            </el-table-column>
+            <el-table-column label="回收条件" width="170">
+              <template #default="{ row }">
+                <el-select v-model="row.condition" size="small" style="width: 100%">
+                  <el-option label="未跟进" value="noFollow" />
+                  <el-option label="未成交" value="noDeal" />
+                  <el-option label="未联系" value="noContact" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="天数" width="110">
+              <template #default="{ row }">
+                <el-input-number v-model="row.days" :min="1" size="small" controls-position="right" style="width: 100%" />
+              </template>
+            </el-table-column>
+            <el-table-column label="适用范围" width="160">
+              <template #default="{ row }">
+                <el-select v-model="row.scope" size="small" style="width: 100%">
+                  <el-option label="全部线索" value="all" />
+                  <el-option label="按来源" value="source" />
+                  <el-option label="按部门" value="dept" />
+                </el-select>
+              </template>
+            </el-table-column>
+            <el-table-column label="启用" width="80">
+              <template #default="{ row }">
+                <el-switch v-model="row.enabled" />
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="80" fixed="right">
+              <template #default="{ $index }">
+                <el-button type="danger" link size="small" @click="rulesDialog.recycleRules.splice($index, 1)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="rule-add-bar">
+            <el-button plain size="small" @click="addRecycleRule"><el-icon><Plus /></el-icon>添加规则</el-button>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      <template #footer>
+        <el-button @click="rulesDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="savePoolRules">保存</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 导入弹窗 -->
+    <el-dialog v-model="importDialog.visible" title="导入线索" width="640px">
+      <div class="import-tip">
+        <el-icon><InfoFilled /></el-icon>
+        <span>支持 CSV / Excel 文件导入，建议先下载模板按格式填写</span>
+        <el-button link type="primary" @click="downloadTemplate">下载模板</el-button>
+      </div>
+      <el-upload
+        class="import-upload"
+        drag
+        :auto-upload="false"
+        :on-change="handleFileChange"
+        :limit="1"
+        accept=".csv,.xlsx,.xls"
+      >
+        <el-icon class="el-icon--upload"><UploadFilled /></el-icon>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击选择文件</em></div>
+      </el-upload>
+      <div v-if="importDialog.preview.length" class="import-preview">
+        <div class="preview-title">预览（前 5 行）</div>
+        <el-table :data="importDialog.preview" size="small" border>
+          <el-table-column prop="name" label="公司名称" />
+          <el-table-column prop="company" label="联系人" />
+          <el-table-column prop="phone" label="手机号" />
+          <el-table-column prop="email" label="公司地址" />
+        </el-table>
+      </div>
+      <template #footer>
+        <el-button @click="importDialog.visible = false">取消</el-button>
+        <el-button type="primary" :disabled="!importDialog.preview.length" @click="confirmImport">确认导入</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 查重工具弹窗 -->
+    <el-dialog v-model="dupDialog.visible" title="查重工具" width="640px">
+      <el-form inline>
+        <el-form-item label="查重字段">
+          <el-radio-group v-model="dupDialog.field">
+            <el-radio label="phone">手机号</el-radio>
+            <el-radio label="name">公司名称</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="查重值">
+          <el-input v-model="dupDialog.value" placeholder="请输入要查重的内容" style="width: 240px" />
+        </el-form-item>
+        <el-button type="primary" @click="runDuplicate">查重</el-button>
+      </el-form>
+      <div v-if="dupDialog.searched" class="dup-result">
+        <el-alert
+          :title="`匹配到 ${dupDialog.results.length} 条记录`"
+          :type="dupDialog.results.length ? 'warning' : 'success'"
+          :closable="false"
+          show-icon
+        />
+        <el-table v-if="dupDialog.results.length" :data="dupDialog.results" size="small" border style="margin-top: 12px">
+          <el-table-column prop="name" label="公司名称" />
+          <el-table-column prop="company" label="联系人" />
+          <el-table-column prop="phone" label="手机号" />
+          <el-table-column prop="ownerName" label="负责人" />
+        </el-table>
+      </div>
+      <template #footer>
+        <el-button @click="dupDialog.visible = false">关闭</el-button>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, computed, onMounted } from 'vue'
+import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import {
+  Search, Plus, ArrowDown, Upload, Download, Setting,
+  InfoFilled, UploadFilled
+} from '@element-plus/icons-vue'
+import { leadApi } from '@/api/crm'
+
+interface Lead {
+  id: number
+  name: string
+  company: string
+  phone: string
+  registerDate: string
+  email: string
+  source: number
+  status: number
+  pool: number
+  ownerId: number | null
+  ownerName: string
+  lastFollowTime: string
+  createTime: string
+  remark: string
+}
+
+const STORAGE_KEY = 'crm_leads_data'
+const RULES_KEY = 'lead_pool_rules'
+const CURRENT_USER_ID = 1
+const CURRENT_USER_NAME = '我'
+
+const mockUsers = [
+  { id: 1, name: '张三' },
+  { id: 2, name: '李四' },
+  { id: 3, name: '王五' },
+  { id: 4, name: '赵六' }
+]
+
+const activeTab = ref<'pool' | 'my'>('pool')
+const loading = ref(false)
+const tableRef = ref()
+const allLeads = ref<Lead[]>([])
+const selectedRows = ref<Lead[]>([])
+
+const queryParams = reactive({
+  page: 1,
+  size: 20,
+  source: null as number | null,
+  status: null as number | null,
+  keyword: ''
+})
+
+// ============ 数据初始化 ============
+const seedData = (): Lead[] => {
+  const sources = [1, 2, 3, 4, 5]
+  const statuses = [1, 2, 3, 4, 5, 6]
+  const companies = ['杭州星辰科技有限公司', '杭州宏途集团有限公司', '杭州金辉资本有限公司', '杭州云智软件有限公司', '杭州盛世传媒有限公司', '杭州远翔物流有限公司', '杭州锦程贸易有限公司', '杭州弘毅咨询有限公司', '杭州海纳信息有限公司', '杭州博远教育有限公司']
+  const contacts = ['张三', '李四', '王五', '赵六', '陈七', '周八', '吴九', '郑十', '黄强', '徐丽']
+  const phones = ['13812345678', '13987654321', '13700001234', '13600009999', '13511112222', '13422223333', '13333334444', '13244445555', '13155556666', '13066667777']
+  const addresses = ['杭州市西湖区文三路 100 号', '杭州市拱墅区莫干山路 200 号', '杭州市滨江区江南大道 300 号', '杭州市余杭区文一西路 400 号', '杭州市上城区解放路 500 号', '杭州市下城区凤起路 600 号', '杭州市萧山区市心北路 700 号', '杭州市西湖区天目山路 800 号', '杭州市滨江区滨盛路 900 号', '杭州市余杭区五常大道 1010 号']
+  const list: Lead[] = []
+  for (let i = 0; i < 10; i++) {
+    const isPool = i % 2 === 0
+    list.push({
+      id: 1000 + i,
+      name: companies[i],
+      company: contacts[i],
+      phone: phones[i],
+      registerDate: `${2018 + Math.floor(Math.random() * 7)}-${String(Math.ceil(Math.random() * 12)).padStart(2, '0')}-${String(Math.ceil(Math.random() * 28)).padStart(2, '0')}`,
+      email: addresses[i],
+      source: sources[i % 5],
+      status: statuses[i % 6],
+      pool: isPool ? 1 : 0,
+      ownerId: isPool ? null : (i % 4) + 1,
+      ownerName: isPool ? '' : mockUsers[(i % 4)].name,
+      lastFollowTime: `2026-05-${String(10 + i).padStart(2, '0')} 10:30`,
+      createTime: `2026-05-${String(1 + i).padStart(2, '0')} 09:00`,
+      remark: ''
+    })
+  }
+  return list
+}
+
+const loadFromStorage = (): Lead[] => {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (raw) return JSON.parse(raw) as Lead[]
+  } catch {}
+  return []
+}
+
+const saveToStorage = () => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allLeads.value))
+  } catch {}
+}
+
+const fetchLeads = async () => {
+  loading.value = true
+  try {
+    let resp: any = null
+    if (activeTab.value === 'pool') resp = await leadApi.poolList(queryParams)
+    else resp = await leadApi.myList(queryParams)
+    if (resp && Array.isArray(resp.records)) {
+      allLeads.value = resp.records
+      saveToStorage()
+    } else {
+      throw new Error('empty')
+    }
+  } catch {
+    let cached = loadFromStorage()
+    if (!cached.length) {
+      cached = seedData()
+      allLeads.value = cached
+      saveToStorage()
+    } else {
+      allLeads.value = cached
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+// ============ 计算属性 ============
+const filteredList = computed(() => {
+  let list = allLeads.value.slice()
+  if (activeTab.value === 'pool') list = list.filter(l => l.pool === 1)
+  else if (activeTab.value === 'my') list = list.filter(l => l.pool === 0 && l.ownerId === CURRENT_USER_ID)
+  if (queryParams.source != null) list = list.filter(l => l.source === queryParams.source)
+  if (queryParams.status != null) list = list.filter(l => l.status === queryParams.status)
+  const kw = queryParams.keyword.trim()
+  if (kw) list = list.filter(l => l.name.includes(kw) || l.phone.includes(kw))
+  return list
+})
+
+const totalCount = computed(() => filteredList.value.length)
+
+// ============ 标签辅助 ============
+const sourceLabel = (val: number) => {
+  const map: Record<number, string> = { 1: '天眼查平台', 2: '老客户转介绍', 3: '运营-美团', 4: '运营-抖音', 5: '线下来客' }
+  return map[val] || '-'
+}
+const sourceTagType = (val: number) => {
+  const map: Record<number, string> = { 1: '', 2: 'success', 3: 'warning', 4: 'danger', 5: 'info' }
+  return map[val] || ''
+}
+const statusLabel = (val: number) => {
+  const map: Record<number, string> = { 1: '0新建客户', 2: 'A初步接洽', 3: 'B需求确认', 4: 'C方案报价', 5: 'D谈判审核', 6: 'E成交' }
+  return map[val] || '-'
+}
+const statusTagType = (val: number) => {
+  const map: Record<number, string> = { 1: 'info', 2: '', 3: 'warning', 4: 'warning', 5: 'danger', 6: 'success' }
+  return map[val] || ''
+}
+
+// ============ 交互 ============
+const handleTabChange = () => {
+  selectedRows.value = []
+  queryParams.page = 1
+  fetchLeads()
+}
+const handleSearch = () => { queryParams.page = 1 }
+const handleReset = () => {
+  queryParams.source = null
+  queryParams.status = null
+  queryParams.keyword = ''
+  queryParams.page = 1
+}
+const handleSelectionChange = (rows: Lead[]) => { selectedRows.value = rows }
+const clearSelection = () => { tableRef.value?.clearSelection() }
+
+// ============ 新建 / 编辑 ============
+const formRef = ref<FormInstance>()
+const formDialog = reactive({ visible: false, isEdit: false })
+const formData = reactive<Partial<Lead>>({
+  id: 0, name: '', company: '', phone: '', registerDate: '', email: '', source: 1, status: 1, remark: ''
+})
+const formRules: FormRules = {
+  name: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+  phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
+  source: [{ required: true, message: '请选择来源', trigger: 'change' }]
+}
+
+const resetFormData = () => {
+  Object.assign(formData, { id: 0, name: '', company: '', phone: '', registerDate: '', email: '', source: 1, status: 1, remark: '' })
+}
+const openCreate = () => {
+  formDialog.isEdit = false
+  resetFormData()
+  formDialog.visible = true
+}
+const openEdit = (row: Lead) => {
+  formDialog.isEdit = true
+  Object.assign(formData, row)
+  formDialog.visible = true
+}
+const submitForm = async () => {
+  if (!formRef.value) return
+  await formRef.value.validate(async (valid) => {
+    if (!valid) return
+    if (formDialog.isEdit) {
+      try { await leadApi.update(formData) } catch {}
+      const idx = allLeads.value.findIndex(l => l.id === formData.id)
+      if (idx >= 0) Object.assign(allLeads.value[idx], formData)
+      ElMessage.success('已更新')
+    } else {
+      const newLead: Lead = {
+        id: Date.now(),
+        name: formData.name || '',
+        company: formData.company || '',
+        phone: formData.phone || '',
+        registerDate: formData.registerDate || '',
+        email: formData.email || '',
+        source: formData.source || 1,
+        status: 1,
+        pool: 0,
+        ownerId: CURRENT_USER_ID,
+        ownerName: CURRENT_USER_NAME,
+        lastFollowTime: '',
+        createTime: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        remark: formData.remark || ''
+      }
+      try { await leadApi.create(newLead) } catch {}
+      allLeads.value.unshift(newLead)
+      ElMessage.success('已创建')
+    }
+    saveToStorage()
+    formDialog.visible = false
+  })
+}
+
+// ============ 删除 ============
+const handleDelete = async (row: Lead) => {
+  await ElMessageBox.confirm(`确定删除线索「${row.name}」？`, '提示', { type: 'warning' })
+  try { await leadApi.remove(row.id) } catch {}
+  allLeads.value = allLeads.value.filter(l => l.id !== row.id)
+  saveToStorage()
+  ElMessage.success('已删除')
+}
+const handleBatchDelete = async () => {
+  await ElMessageBox.confirm(`确定删除选中的 ${selectedRows.value.length} 条线索？`, '提示', { type: 'warning' })
+  const ids = selectedRows.value.map(r => r.id)
+  allLeads.value = allLeads.value.filter(l => !ids.includes(l.id))
+  saveToStorage()
+  selectedRows.value = []
+  ElMessage.success('已删除')
+}
+
+// ============ 成交 / 放回公海 ============
+const handleDeal = (row: Lead) => {
+  row.status = 6
+  saveToStorage()
+  ElMessage.success('已标记为成交')
+}
+const handleReturnToPool = async (row: Lead) => {
+  await ElMessageBox.confirm(`确定将「${row.name}」放回公海？`, '提示', { type: 'warning' })
+  try { await leadApi.returnToPool([row.id], '') } catch {}
+  row.pool = 1
+  row.ownerId = null
+  row.ownerName = ''
+  saveToStorage()
+  ElMessage.success('已放回公海')
+}
+
+// ============ 领取 / 退回 / 分配 ============
+const handleClaimSingle = async (row: Lead) => {
+  try { await leadApi.claim([row.id]) } catch {}
+  row.pool = 0
+  row.ownerId = CURRENT_USER_ID
+  row.ownerName = CURRENT_USER_NAME
+  saveToStorage()
+  ElMessage.success(`已领取「${row.name}」`)
+}
+const handleClaim = async () => {
+  const ids = selectedRows.value.map(r => r.id)
+  try { await leadApi.claim(ids) } catch {}
+  allLeads.value.forEach(l => {
+    if (ids.includes(l.id)) {
+      l.pool = 0
+      l.ownerId = CURRENT_USER_ID
+      l.ownerName = CURRENT_USER_NAME
+    }
+  })
+  saveToStorage()
+  selectedRows.value = []
+  ElMessage.success(`已领取 ${ids.length} 条`)
+}
+
+const distributeDialog = reactive({ visible: false, ownerId: null as number | null })
+const openDistribute = () => {
+  distributeDialog.ownerId = null
+  distributeDialog.visible = true
+}
+const submitDistribute = async () => {
+  if (!distributeDialog.ownerId) return ElMessage.warning('请选择负责人')
+  const ids = selectedRows.value.map(r => r.id)
+  const ownerId = distributeDialog.ownerId
+  const ownerName = mockUsers.find(u => u.id === ownerId)?.name || ''
+  try { await leadApi.distribute({ ids, ownerId }) } catch {}
+  allLeads.value.forEach(l => {
+    if (ids.includes(l.id)) {
+      l.pool = 0
+      l.ownerId = ownerId
+      l.ownerName = ownerName
+    }
+  })
+  saveToStorage()
+  selectedRows.value = []
+  distributeDialog.visible = false
+  ElMessage.success('已分配')
+}
+
+const returnDialog = reactive({ visible: false, reason: '' })
+const openReturnPool = () => {
+  returnDialog.reason = ''
+  returnDialog.visible = true
+}
+const submitReturn = async () => {
+  const ids = selectedRows.value.map(r => r.id)
+  try { await leadApi.returnToPool(ids, returnDialog.reason) } catch {}
+  allLeads.value.forEach(l => {
+    if (ids.includes(l.id)) {
+      l.pool = 1
+      l.ownerId = null
+      l.ownerName = ''
+    }
+  })
+  saveToStorage()
+  selectedRows.value = []
+  returnDialog.visible = false
+  ElMessage.success('已退回公海')
+}
+
+// ============ 更多菜单 ============
+const handleMore = (cmd: string) => {
+  if (cmd === 'import') importDialog.visible = true
+  else if (cmd === 'export') doExport()
+  else if (cmd === 'rules') openRules()
+  else if (cmd === 'duplicate') {
+    dupDialog.field = 'phone'
+    dupDialog.value = ''
+    dupDialog.searched = false
+    dupDialog.results = []
+    dupDialog.visible = true
+  }
+}
+
+// ============ 公海规则 ============
+interface DistributeRule { name: string; trigger: string; mode: string; target: string; maxHold: number; priority: number; enabled: boolean }
+interface RecycleRule { name: string; condition: string; days: number; scope: string; enabled: boolean }
+
+const rulesDialog = reactive({
+  visible: false,
+  activeTab: 'distribute',
+  distributeRules: [] as DistributeRule[],
+  recycleRules: [] as RecycleRule[]
+})
+
+const addDistributeRule = () => {
+  rulesDialog.distributeRules.push({
+    name: '新规则', trigger: 'onCreate', mode: 'round', target: '', maxHold: 100, priority: 10, enabled: true
+  })
+}
+const addRecycleRule = () => {
+  rulesDialog.recycleRules.push({ name: '新规则', condition: 'noFollow', days: 15, scope: 'all', enabled: true })
+}
+
+const openRules = async () => {
+  try {
+    const resp: any = await leadApi.getPoolRules()
+    rulesDialog.distributeRules = resp?.distributeRules || []
+    rulesDialog.recycleRules = resp?.recycleRules || []
+  } catch {
+    try {
+      const raw = localStorage.getItem(RULES_KEY)
+      if (raw) {
+        const data = JSON.parse(raw)
+        rulesDialog.distributeRules = data.distributeRules || []
+        rulesDialog.recycleRules = data.recycleRules || []
+      } else {
+        rulesDialog.distributeRules = [
+          { name: '默认轮询', trigger: 'onCreate', mode: 'round', target: '销售一部', maxHold: 200, priority: 10, enabled: true }
+        ]
+        rulesDialog.recycleRules = [
+          { name: '15 天未跟进', condition: 'noFollow', days: 15, scope: 'all', enabled: true }
+        ]
+      }
+    } catch {}
+  }
+  rulesDialog.visible = true
+}
+
+const savePoolRules = async () => {
+  const payload = {
+    distributeRules: rulesDialog.distributeRules,
+    recycleRules: rulesDialog.recycleRules
+  }
+  try {
+    await leadApi.savePoolRules(payload)
+    ElMessage.success('规则已保存到服务端')
+  } catch {
+    try { localStorage.setItem(RULES_KEY, JSON.stringify(payload)) } catch {}
+    ElMessage.success('规则已保存到本地')
+  }
+  rulesDialog.visible = false
+}
+
+// ============ 导入 ============
+const importDialog = reactive({
+  visible: false,
+  preview: [] as any[],
+  rows: [] as any[]
+})
+
+const downloadTemplate = () => {
+  const header = '公司名称,联系人,联系电话,公司注册日期,来源(1天眼查/2转介绍/3美团/4抖音/5线下),公司地址,备注\n'
+  const sample = '杭州示例科技有限公司,张三,13800000000,2020-01-15,1,杭州市西湖区示例路 1 号,示例备注\n'
+  const blob = new Blob(['\uFEFF' + header + sample], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'lead_template.csv'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+const handleFileChange = (file: any) => {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const text = (e.target?.result as string) || ''
+    const lines = text.replace(/^\uFEFF/, '').split(/\r?\n/).filter(Boolean)
+    if (lines.length < 2) {
+      ElMessage.warning('文件内容为空')
+      return
+    }
+    const rows: any[] = []
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',')
+      rows.push({
+        name: cols[0]?.trim() || '',
+        company: cols[1]?.trim() || '',
+        phone: cols[2]?.trim() || '',
+        registerDate: cols[3]?.trim() || '',
+        source: Number(cols[4]?.trim()) || 1,
+        email: cols[5]?.trim() || '',
+        remark: cols[6]?.trim() || ''
+      })
+    }
+    importDialog.rows = rows
+    importDialog.preview = rows.slice(0, 5)
+  }
+  reader.readAsText(file.raw, 'utf-8')
+}
+
+const confirmImport = async () => {
+  try {
+    const fd = new FormData()
+    fd.append('rows', JSON.stringify(importDialog.rows))
+    await leadApi.importLeads(fd)
+  } catch {}
+  const now = new Date().toISOString().slice(0, 16).replace('T', ' ')
+  importDialog.rows.forEach((r: any, idx: number) => {
+    allLeads.value.unshift({
+      id: Date.now() + idx,
+      name: r.name, company: r.company, phone: r.phone, registerDate: r.registerDate || '', email: r.email,
+      source: r.source, status: 1, pool: 1,
+      ownerId: null, ownerName: '',
+      lastFollowTime: '', createTime: now, remark: r.remark || ''
+    })
+  })
+  saveToStorage()
+  ElMessage.success(`已导入 ${importDialog.rows.length} 条线索`)
+  importDialog.preview = []
+  importDialog.rows = []
+  importDialog.visible = false
+}
+
+// ============ 导出 ============
+const doExport = () => {
+  const rows = filteredList.value
+  if (!rows.length) return ElMessage.warning('当前没有可导出数据')
+  const header = ['公司名称', '联系人', '联系电话', '公司注册日期', '来源', '公司地址', '跟进状态', '负责人', '最近跟进', '创建时间']
+  const lines = [header.join(',')]
+  rows.forEach(r => {
+    lines.push([
+      r.name, r.company, r.phone, r.registerDate || '',
+      sourceLabel(r.source), r.email,
+      statusLabel(r.status),
+      r.ownerName || '公海', r.lastFollowTime || '', r.createTime
+    ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+  })
+  const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `线索导出_${Date.now()}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+  ElMessage.success(`已导出 ${rows.length} 条`)
+}
+
+// ============ 查重 ============
+const dupDialog = reactive({
+  visible: false,
+  field: 'phone' as 'phone' | 'name',
+  value: '',
+  searched: false,
+  results: [] as Lead[]
+})
+
+const runDuplicate = async () => {
+  const v = dupDialog.value.trim()
+  if (!v) return ElMessage.warning('请输入查重值')
+  try {
+    const resp: any = await leadApi.checkDuplicate({ [dupDialog.field]: v })
+    if (resp && Array.isArray(resp.records)) {
+      dupDialog.results = resp.records
+      dupDialog.searched = true
+      return
+    }
+  } catch {}
+  dupDialog.results = allLeads.value.filter(l => {
+    if (dupDialog.field === 'phone') return l.phone.includes(v)
+    return l.name.includes(v)
+  })
+  dupDialog.searched = true
+}
+
+onMounted(fetchLeads)
+</script>
+
+<style scoped>
+.lead-page {
+  padding: 16px 20px;
+  background: var(--bg-card);
+  min-height: calc(100vh - 60px);
+  color: var(--text-primary);
+}
+
+.page-header {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px 8px 0 0;
+  padding: 4px 16px 0;
+}
+.lead-tabs :deep(.el-tabs__item) {
+  color: var(--text-body);
+  font-size: 14px;
+}
+.lead-tabs :deep(.el-tabs__item.is-active) {
+  color: var(--gold-primary);
+  font-weight: 600;
+}
+.lead-tabs :deep(.el-tabs__active-bar) {
+  background: var(--gold-primary);
+  height: 3px;
+  border-radius: 2px;
+}
+.lead-tabs :deep(.el-tabs__nav-wrap::after) { background: var(--border-gold); }
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border-gold);
+  border-right: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+}
+.filter-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.filter-right { display: flex; align-items: center; gap: 10px; }
+
+.batch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0));
+  border-left: 1px solid var(--border-gold);
+  border-right: 1px solid var(--border-gold);
+  border-bottom: 1px solid var(--border-gold);
+}
+.batch-info { color: var(--text-body); font-size: 13px; }
+.batch-info em { font-style: normal; color: var(--gold-primary); font-weight: 600; padding: 0 4px; }
+.batch-actions { display: flex; align-items: center; gap: 8px; }
+
+.table-wrap {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-gold);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 8px 12px 12px;
+}
+.link-text { color: var(--gold-primary); cursor: pointer; }
+.link-text:hover { color: var(--gold-champagne); text-decoration: underline; }
+.muted { color: var(--text-body); font-size: 12px; }
+
+.pagination-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding: 8px 4px;
+}
+
+.rules-inner-tabs :deep(.el-tabs__item.is-active) { color: var(--gold-primary); }
+.rules-inner-tabs :deep(.el-tabs__active-bar) { background: var(--gold-primary); }
+.rule-add-bar {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-gold);
+  text-align: center;
+}
+
+.import-tip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  color: var(--text-body);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+.import-tip .el-icon { color: var(--warning); }
+.import-upload :deep(.el-upload-dragger) {
+  background: var(--bg-darkest);
+  border-color: var(--border-gold);
+}
+.import-preview { margin-top: 16px; }
+.preview-title { color: var(--gold-primary); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
+
+.dup-result { margin-top: 12px; }
+</style>

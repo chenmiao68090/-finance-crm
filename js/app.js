@@ -32,7 +32,8 @@ const pageNames = {
     'multitable': '多维表格',
     'expense': '报销管理',
     'system': '系统管理',
-    'system-permissions': '人员权限管理'
+    'system-permissions': '人员权限管理',
+    'call-center': '呼叫中心'
 };
 
 let currentPage = 'home';
@@ -125,6 +126,9 @@ function navigateTo(page) {
     if (currentPage === 'perf-management' && typeof PerfManagement !== 'undefined') {
         PerfManagement.destroy();
     }
+    if (currentPage === 'call-center' && typeof CallCenter !== 'undefined') {
+        CallCenter.destroy();
+    }
 
     currentPage = page;
 
@@ -172,6 +176,8 @@ function navigateTo(page) {
         MultiTable.init();
     } else if (page === 'system-permissions') {
         SystemPermissions.init();
+    } else if (page === 'call-center') {
+        CallCenter.init();
     } else {
         // 其他页面显示占位
         const contentArea = document.querySelector('.content-area');

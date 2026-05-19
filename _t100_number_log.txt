@@ -1,0 +1,116 @@
+﻿node : NOT FOUND: "<span>02 路 鍙风爜涓庣嚎璺?/ Number &amp; Line</span>"
+所在位置 行:1 字符: 1
++ node d:\陈苗\_apply_task100_number.js 2>&1 | Out-File -Encoding utf8 d: ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (NOT FOUND: "<sp...p; Line</span>" 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+NOT FOUND: "<span class=\"title-serif\">鍙风爜姹?/span>"
+NOT FOUND: "<span class=\"title-serif italic\">SIP 涓户</span>"
+NOT FOUND: "<div class=\"stat-label\">鍦ㄥ唽鍙风爜</div>"
+NOT FOUND: "<span class=\"dot dot-idle\"></span>绌洪棽 {{ stats.idleNumbers }}"
+NOT FOUND: "<div class=\"stat-label\">涓户骞跺彂</div>"
+NOT FOUND: "<span class=\"dot dot-busy\"></span>鍗犵敤鐜?{{ stats.concurrentRate }}
+%"
+NOT FOUND: "<div class=\"stat-label\">鍦ㄧ嚎涓户</div>"
+NOT FOUND: "<span class=\"dot dot-online\"></span>SIP 閾捐矾娲昏穬"
+NOT FOUND: "<span class=\"tab-name\">鍙风爜姹犵鐞?/span>"
+NOT FOUND: "<span class=\"tab-name\">SIP 涓户绠＄悊</span>"
+NOT FOUND: "placeholder=\"鎼滅储鍙风爜 / 褰掑睘鍦?/ 澶囨敞\""
+NOT FOUND: "<el-select v-model=\"numQuery.kind\" placeholder=\"鍙风爜绫诲瀷\" clearab
+le class=\"tool-sele"
+NOT FOUND: "<el-option label=\"400 鍙风爜\" value=\"400\" />"
+NOT FOUND: "<el-option label=\"鍥鸿瘽\" value=\"landline\" />"
+NOT FOUND: "<el-option label=\"鎵嬫満\" value=\"mobile\" />"
+NOT FOUND: "<el-select v-model=\"numQuery.status\" placeholder=\"鐘舵€乗" clearabl
+e class=\"tool-sele"
+NOT FOUND: "<el-option label=\"绌洪棽\" value=\"idle\" />"
+NOT FOUND: "<el-option label=\"鍗犵敤\" value=\"busy\" />"
+NOT FOUND: "<el-option label=\"鍋滅敤\" value=\"disabled\" />"
+NOT FOUND: "<el-icon><Upload /></el-icon>鎵归噺瀵煎叆"
+NOT FOUND: "<el-icon><Plus /></el-icon>鏂板鍙风爜"
+NOT FOUND: "empty-text=\"鏆傛棤鍙风爜璁板綍\""
+NOT FOUND: "<el-table-column label=\"鍙风爜\" min-width=\"180\">"
+NOT FOUND: "<el-table-column label=\"褰掑睘鍦癨" width=\"160\">"
+NOT FOUND: "<el-table-column label=\"鏂瑰悜\" width=\"120\">"
+NOT FOUND: "<el-table-column label=\"鐘舵€乗" width=\"130\">"
+NOT FOUND: "<el-table-column label=\"缁戝畾鍧愬腑\" width=\"160\">"
+NOT FOUND: "<el-table-column label=\"鏈堢璐筡" width=\"120\" align=\"right\">"
+NOT FOUND: "<el-table-column label=\"鎿嶄綔\" width=\"220\" fixed=\"right\">"
+NOT FOUND: "<span v-else class=\"text-muted\">鈥?鏈粦瀹?鈥?/span>"
+NOT FOUND: "<button class=\"link-act\" @click=\"openNumberDialog(row)\">缂栬緫</bu
+tton>"
+NOT FOUND: "{{ row.enabled ? '鍋滅敤' : '鍚敤' }}"
+NOT FOUND: "<button class=\"link-act danger\" @click=\"deleteNumber(row)\">鍒犻櫎<
+/button>"
+NOT FOUND: "<span class=\"sum-key\">娲昏穬閾捐矾</span>"
+NOT FOUND: "<span class=\"sum-key\">鎬诲苟鍙?/span>"
+NOT FOUND: "<el-icon><Refresh /></el-icon>鍒锋柊"
+NOT FOUND: "<el-icon><Plus /></el-icon>鏂板涓户"
+NOT FOUND: "empty-text=\"鏆傛棤涓户閰嶇疆\""
+NOT FOUND: "<el-table-column label=\"涓户鍚嶇О\" min-width=\"200\">"
+NOT FOUND: "<el-table-column label=\"IP 鍦板潃\" width=\"180\">"
+NOT FOUND: "<el-table-column label=\"绔彛\" width=\"100\" align=\"center\">"
+NOT FOUND: "<el-table-column label=\"鍗忚\" width=\"110\" align=\"center\">"
+NOT FOUND: "<el-table-column label=\"骞跺彂鍗犵敤\" width=\"200\">"
+NOT FOUND: "<el-table-column label=\"鐘舵€乗" width=\"130\">"
+NOT FOUND: "<el-table-column label=\"鎿嶄綔\" width=\"260\" fixed=\"right\">"
+NOT FOUND: "<button class=\"link-act\" @click=\"openTrunkDialog(row)\">缂栬緫</but
+ton>"
+NOT FOUND: "<button class=\"link-act\" @click=\"testTrunk(row)\">杩為€氭€?/button>
+"
+NOT FOUND: "{{ row.status === 'offline' ? '鍚敤' : '绂佺敤' }}"
+NOT FOUND: ":title=\"numberDialog.id ? '缂栬緫鍙风爜' : '鏂板鍙风爜'\""
+NOT FOUND: "<el-form-item label=\"鍛煎彨鏂瑰悜\">"
+NOT FOUND: "<el-option label=\"鍛煎叆 Inbound\" value=\"inbound\" />"
+NOT FOUND: "<el-option label=\"澶栧懠 Outbound\" value=\"outbound\" />"
+NOT FOUND: "<el-option label=\"鍙屽悜 Both\" value=\"both\" />"
+NOT FOUND: "<el-form-item label=\"鏈堢璐?(楼)\">"
+NOT FOUND: ":title=\"trunkDialog.id ? '缂栬緫 SIP 涓户' : '鏂板 SIP 涓户'\""
+NOT FOUND: "<el-form-item label=\"绔彛\">"
+NOT FOUND: "<el-form-item label=\"鍗忚\">"
+NOT FOUND: "<el-form-item label=\"鏈€澶у苟鍙戞暟\">"
+NOT FOUND: "<el-form-item label=\"璁よ瘉鐢ㄦ埛鍚峔">"
+NOT FOUND: "<el-form-item label=\"璁よ瘉瀵嗙爜\">"
+NOT FOUND: "title=\"鎵归噺瀵煎叆鍙风爜\""
+NOT FOUND: "<span class=\"hint-bullet\">鈶?/span> 妯℃澘瀛楁椤哄簭锛?
+NOT FOUND: "<div class=\"upload-title\">灏?CSV / Excel 鎷栨嫿鑷虫</div>"
+NOT FOUND: "<div class=\"upload-sub\">鎴?<em>鐐瑰嚮閫夋嫨鏂囦欢</em>锛屼粎鏀寔 .csv / .xls / 
+.xlsx</div>"
+NOT FOUND: "<span class=\"preview-title\">瑙ｆ瀽棰勮</span>"
+NOT FOUND: "<span :class=\"p.valid ? 'pv-ok' : 'pv-err'\">{{ p.valid ? '鍙鍏? :
+ (p.error || '鏍煎紡"
+NOT FOUND: "function kindLabel(k: string) { return k === '400' ? '400' : k === 
+'mobile' ? '鎵?
+NOT FOUND: "function dirLabel(d: string) { return d === 'inbound' ? '鍛煎叆' : d =
+== 'outbound' "
+NOT FOUND: "function statusLabel(s: string) { return s === 'idle' ? '绌洪棽' : s =
+== 'busy' ? '鍗?
+NOT FOUND: "function trunkStatusLabel(s: string) { return s === 'online' ? '鍦ㄧ嚎
+' : s === 'off"
+NOT FOUND: "ElMessage.warning('璇峰～鍐欏彿鐮?)"
+NOT FOUND: "ElMessage.success('宸叉洿鏂板彿鐮?)"
+NOT FOUND: "ElMessage.success('宸叉柊澧炲彿鐮?)"
+NOT FOUND: "ElMessage.success(row.enabled ? '鍙风爜宸插惎鐢? : '鍙风爜宸插仠鐢?)"
+NOT FOUND: "ElMessage.success('宸插垹闄?)"
+NOT FOUND: "ElMessage.warning('璇峰～鍐欎腑缁у悕绉颁笌 IP')"
+NOT FOUND: "ElMessage.success('宸叉洿鏂颁腑缁ч厤缃?)"
+NOT FOUND: "ElMessage.success('宸叉柊澧炰腑缁?)"
+NOT FOUND: "ElMessage.info(`姝ｅ湪娴嬭瘯 ${row.name} (${row.host}:${row.port}) ...`)"
+NOT FOUND: "if (ok) ElMessage.success(`${row.name} 杩為€氭甯?路 寤惰繜 ${20 + Math.flo
+or(Math.random()"
+NOT FOUND: "else ElMessage.warning(`${row.name} 杩為€氬け璐?路 璇锋鏌?SIP 娉ㄥ唽鐘舵€乣)"
+NOT FOUND: "ElMessage.warning('璇峰厛濉啓 IP 鍦板潃')"
+NOT FOUND: "ElMessage.info(`姝ｅ湪娴嬭瘯 ${trunkDialog.form.host}:${trunkDialog.form.
+port} ...`)"
+NOT FOUND: "setTimeout(() => ElMessage.success('SIP OPTIONS 鎺㈡祴鎴愬姛 路 閾捐矾鍙揪'), 
+700)"
+NOT FOUND: "ElMessage.success(row.status === 'online' ? '涓户宸插惎鐢? : '涓户宸茬鐢?)"
+NOT FOUND: "ElMessage.warning('鏂囦欢鍐呭涓虹┖鎴栫己灏戣〃澶?)"
+NOT FOUND: "if (!/^[0-9\\-]{5,}$/.test(item.number)) item.error = '鍙风爜鏍煎紡閿欒'"
+NOT FOUND: "else if (!['inbound', 'outbound', 'both'].includes(item.type)) item
+.error = '鏂瑰悜鍙?
+NOT FOUND: "ElMessage.info('宸插姞杞?Excel 绀轰緥棰勮锛堟紨绀烘ā寮忥級')"
+NOT FOUND: "ElMessage.success(`鎴愬姛瀵煎叆 ${valid.length} 鏉″彿鐮乣)"
+number.vue done

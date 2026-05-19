@@ -1,0 +1,25 @@
+const fs = require('fs');
+const s = fs.readFileSync('d:\\zhehang-erp\\zhehang-erp-ui\\src\\views\\call-center\\agent.vue', 'utf8');
+console.log('useI18n imported:', s.includes('useI18n'));
+console.log('const { t } = useI18n():', s.includes("const { t } = useI18n()"));
+console.log('STATUS_META.value:', s.includes('STATUS_META.value'));
+console.log('坐席管理 in <h2>:', /<h2[^>]*>坐席管理</.test(s));
+console.log('label="工号":', s.includes('label="工号"'));
+console.log('label="姓名":', s.includes('label="姓名"'));
+console.log('placeholder="搜索工号:', s.includes('placeholder="搜索工号'));
+console.log('坐席新增成功:', s.includes('坐席新增成功'));
+console.log('"删除确认":', s.includes("'删除确认'"));
+// Find any remaining Chinese in non-style sections
+const tplStart = s.indexOf('<template>');
+const tplEnd = s.indexOf('</template>');
+const scrStart = s.indexOf('<script setup');
+const scrEnd = s.indexOf('</script>');
+const tpl = s.slice(tplStart, tplEnd);
+const scr = s.slice(scrStart, scrEnd);
+const re = /[\u4e00-\u9fff]+/g;
+const tplCh = tpl.match(re) || [];
+const scrCh = scr.match(re) || [];
+console.log('--- Chinese in template ---');
+console.log([...new Set(tplCh)].join(' | '));
+console.log('--- Chinese in script ---');
+console.log([...new Set(scrCh)].join(' | '));

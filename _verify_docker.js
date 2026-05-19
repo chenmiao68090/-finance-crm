@@ -1,0 +1,13 @@
+const fs = require('fs');
+const dockerfile = fs.readFileSync('d:/zhehang-erp/zhehang-erp-server/Dockerfile', 'utf8');
+const dockerignore = fs.readFileSync('d:/zhehang-erp/zhehang-erp-server/.dockerignore', 'utf8');
+process.stdout.write('===== Dockerfile =====\n');
+process.stdout.write(dockerfile);
+process.stdout.write('\n===== .dockerignore =====\n');
+process.stdout.write(dockerignore);
+process.stdout.write('\n===== Verification =====\n');
+process.stdout.write('Has builder FROM: ' + dockerfile.includes('FROM maven:3.9-eclipse-temurin-17 AS builder') + '\n');
+process.stdout.write('Has runtime FROM: ' + dockerfile.includes('FROM eclipse-temurin:17-jre AS runtime') + '\n');
+process.stdout.write('Has aliyun mirror: ' + dockerfile.includes('maven.aliyun.com') + '\n');
+process.stdout.write('Has mvn -pl admin -am: ' + dockerfile.includes('-pl zhehang-erp-admin -am') + '\n');
+process.stdout.write('Has ENTRYPOINT: ' + dockerfile.includes('ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar /app/app.jar"]') + '\n');

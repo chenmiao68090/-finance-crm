@@ -1,0 +1,932 @@
+/* ========================================
+   呼叫中心模块样式 - 黑金奢华主题
+   ======================================== */
+
+/* CSS变量定义 */
+.cc-module {
+    --cc-bg-primary: #0A0A0F;
+    --cc-bg-card: #12121A;
+    --cc-bg-card-hover: #1A1A24;
+    --cc-gold: #D4AF37;
+    --cc-gold-light: #F4D03F;
+    --cc-gold-dark: #B8860B;
+    --cc-gold-border: rgba(212, 175, 55, 0.3);
+    --cc-gold-border-light: rgba(212, 175, 55, 0.15);
+    --cc-text-primary: #FFFFFF;
+    --cc-text-secondary: #A0A0B0;
+    --cc-text-muted: #666680;
+    --cc-status-online: #00D084;
+    --cc-status-busy: #D4AF37;
+    --cc-status-break: #8B7BFF;
+    --cc-status-offline: #555555;
+    --cc-status-ringing: #FF6B35;
+    --cc-btn-answer: #00D084;
+    --cc-btn-hangup: #FF4D4F;
+    --cc-btn-hold: #D4AF37;
+    --cc-btn-transfer: #5B8DEF;
+    --cc-border-radius: 10px;
+    --cc-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 模块容器 */
+.cc-module {
+    background: var(--cc-bg-primary);
+    color: var(--cc-text-primary);
+    min-height: 100vh;
+    padding: 24px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Tab导航 */
+.cc-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--cc-gold-border-light);
+    margin-bottom: 24px;
+    padding-bottom: 0;
+}
+
+.cc-tab {
+    padding: 12px 24px;
+    color: var(--cc-text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: var(--cc-transition);
+    font-size: 14px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+}
+
+.cc-tab:hover {
+    color: var(--cc-gold-light);
+}
+
+.cc-tab.active {
+    color: var(--cc-gold);
+    border-bottom-color: var(--cc-gold);
+}
+
+/* 卡片 */
+.cc-card {
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-gold-border-light);
+    border-radius: var(--cc-border-radius);
+    padding: 20px;
+    transition: var(--cc-transition);
+}
+
+.cc-card:hover {
+    border-color: var(--cc-gold-border);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.08);
+}
+
+.cc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--cc-gold-border-light);
+}
+
+.cc-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cc-gold);
+}
+
+/* 统计卡片 */
+.cc-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.cc-stat-card {
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-gold-border-light);
+    border-radius: var(--cc-border-radius);
+    padding: 20px;
+    text-align: center;
+    transition: var(--cc-transition);
+}
+
+.cc-stat-card:hover {
+    border-color: var(--cc-gold-border);
+    transform: translateY(-2px);
+}
+
+.cc-stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cc-gold);
+    margin-bottom: 4px;
+}
+
+.cc-stat-label {
+    font-size: 12px;
+    color: var(--cc-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 表格 */
+.cc-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--cc-border-radius);
+    border: 1px solid var(--cc-gold-border-light);
+}
+
+.cc-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cc-table thead {
+    background: #1A1A24;
+}
+
+.cc-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cc-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--cc-gold-border-light);
+}
+
+.cc-table td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--cc-text-primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.cc-table tbody tr:hover {
+    background: rgba(212, 175, 55, 0.04);
+}
+
+/* 按钮 */
+.cc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: var(--cc-transition);
+}
+
+.cc-btn-primary {
+    background: linear-gradient(135deg, var(--cc-gold), var(--cc-gold-dark));
+    color: #000;
+}
+
+.cc-btn-primary:hover {
+    background: linear-gradient(135deg, var(--cc-gold-light), var(--cc-gold));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.cc-btn-outline {
+    background: transparent;
+    border: 1px solid var(--cc-gold-border);
+    color: var(--cc-gold);
+}
+
+.cc-btn-outline:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--cc-gold);
+}
+
+.cc-btn-danger {
+    background: var(--cc-btn-hangup);
+    color: #fff;
+}
+
+.cc-btn-success {
+    background: var(--cc-btn-answer);
+    color: #fff;
+}
+
+.cc-btn-sm {
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+/* 状态标签 */
+.cc-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.cc-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: ccPulse 2s infinite;
+}
+
+.cc-status-online .cc-status-dot { background: var(--cc-status-online); }
+.cc-status-busy .cc-status-dot { background: var(--cc-status-busy); }
+.cc-status-break .cc-status-dot { background: var(--cc-status-break); }
+.cc-status-offline .cc-status-dot { background: var(--cc-status-offline); }
+.cc-status-ringing .cc-status-dot { background: var(--cc-status-ringing); animation: ccPulse 0.5s infinite; }
+
+.cc-status-online { background: rgba(0, 208, 132, 0.1); color: var(--cc-status-online); }
+.cc-status-busy { background: rgba(212, 175, 55, 0.1); color: var(--cc-status-busy); }
+.cc-status-break { background: rgba(139, 123, 255, 0.1); color: var(--cc-status-break); }
+.cc-status-offline { background: rgba(85, 85, 85, 0.2); color: var(--cc-status-offline); }
+.cc-status-ringing { background: rgba(255, 107, 53, 0.1); color: var(--cc-status-ringing); }
+
+@keyframes ccPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* 表单 */
+.cc-form-group {
+    margin-bottom: 16px;
+}
+
+.cc-form-label {
+    display: block;
+    font-size: 12px;
+    color: var(--cc-text-secondary);
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.cc-form-input,
+.cc-form-select,
+.cc-form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--cc-bg-primary);
+    border: 1px solid var(--cc-gold-border-light);
+    border-radius: 6px;
+    color: var(--cc-text-primary);
+    font-size: 13px;
+    transition: var(--cc-transition);
+    outline: none;
+}
+
+.cc-form-input:focus,
+.cc-form-select:focus,
+.cc-form-textarea:focus {
+    border-color: var(--cc-gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.cc-form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* 模态框 */
+.cc-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+.cc-modal {
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-gold-border);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.05);
+}
+
+.cc-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--cc-gold-border-light);
+}
+
+.cc-modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cc-gold);
+}
+
+.cc-modal-close {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--cc-text-secondary);
+    transition: var(--cc-transition);
+    background: none;
+    border: none;
+    font-size: 18px;
+}
+
+.cc-modal-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--cc-text-primary);
+}
+
+.cc-modal-body {
+    padding: 24px;
+}
+
+.cc-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--cc-gold-border-light);
+}
+
+/* 分页 */
+.cc-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.cc-page-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--cc-gold-border-light);
+    background: transparent;
+    color: var(--cc-text-secondary);
+    cursor: pointer;
+    font-size: 12px;
+    transition: var(--cc-transition);
+}
+
+.cc-page-btn:hover,
+.cc-page-btn.active {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--cc-gold);
+    color: var(--cc-gold);
+}
+
+/* 搜索和筛选 */
+.cc-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.cc-search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 14px 10px 36px;
+    background: var(--cc-bg-primary);
+    border: 1px solid var(--cc-gold-border-light);
+    border-radius: 8px;
+    color: var(--cc-text-primary);
+    font-size: 13px;
+    transition: var(--cc-transition);
+    outline: none;
+}
+
+.cc-search-input:focus {
+    border-color: var(--cc-gold);
+}
+
+/* 空状态 */
+.cc-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--cc-text-muted);
+}
+
+.cc-empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.cc-empty-text {
+    font-size: 14px;
+}
+
+/* 面包屑/页头 */
+.cc-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.cc-page-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--cc-text-primary);
+}
+
+/* Toast通知 */
+.cc-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 99999;
+    animation: ccSlideIn 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.cc-toast-success {
+    background: rgba(0, 208, 132, 0.15);
+    border: 1px solid rgba(0, 208, 132, 0.3);
+    color: var(--cc-status-online);
+}
+
+.cc-toast-error {
+    background: rgba(255, 77, 79, 0.15);
+    border: 1px solid rgba(255, 77, 79, 0.3);
+    color: var(--cc-btn-hangup);
+}
+
+.cc-toast-warning {
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    color: var(--cc-gold);
+}
+
+@keyframes ccSlideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* 网格布局 */
+.cc-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cc-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.cc-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* 徽章 */
+.cc-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--cc-gold);
+    color: #000;
+}
+
+/* 加载动画 */
+.cc-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.cc-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--cc-gold-border-light);
+    border-top-color: var(--cc-gold);
+    border-radius: 50%;
+    animation: ccSpin 0.8s linear infinite;
+}
+
+@keyframes ccSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .cc-module { padding: 12px; }
+    .cc-stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .cc-grid-3, .cc-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .cc-toolbar { flex-direction: column; }
+}
+
+/* ========================================
+   软电话与来电弹屏样式
+   ======================================== */
+
+.cc-softphone {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9998;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.cc-softphone-minimized {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4AF37, #B8860B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+    transition: all 0.3s;
+    border: 2px solid rgba(212, 175, 55, 0.6);
+}
+
+.cc-softphone-minimized:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+}
+
+.cc-softphone-minimized.ringing {
+    animation: ccPhoneRing 0.5s infinite alternate;
+    background: linear-gradient(135deg, #FF6B35, #FF4D4F);
+    border-color: rgba(255, 77, 79, 0.6);
+}
+
+.cc-softphone-minimized.talking {
+    background: linear-gradient(135deg, #00D084, #059669);
+    border-color: rgba(0, 208, 132, 0.6);
+}
+
+.cc-softphone-minimized.afterwork {
+    background: linear-gradient(135deg, #FFB020, #B8860B);
+    border-color: rgba(255, 176, 32, 0.6);
+}
+
+@keyframes ccPhoneRing {
+    from { transform: rotate(-5deg) scale(1.05); }
+    to { transform: rotate(5deg) scale(1.1); }
+}
+
+.cc-softphone-expanded {
+    width: 300px;
+    background: #12121A;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(212, 175, 55, 0.1);
+    overflow: hidden;
+}
+
+.cc-softphone-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #1A1A24;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    cursor: move;
+    user-select: none;
+}
+
+.cc-softphone-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #D4AF37;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cc-softphone-controls {
+    display: flex;
+    gap: 6px;
+}
+
+.cc-softphone-ctrl-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: none;
+    background: transparent;
+    color: #A0A0B0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.cc-softphone-ctrl-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.cc-softphone-body {
+    padding: 16px;
+    max-height: 540px;
+    overflow-y: auto;
+}
+
+/* 拨号盘 */
+.cc-dialpad { margin: 4px 0; }
+
+.cc-dial-display {
+    text-align: center;
+    padding: 10px;
+    background: #0A0A0F;
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #D4AF37;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 1px;
+}
+
+.cc-dialpad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.cc-dialpad-key {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    background: #1A1A24;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+}
+
+.cc-dialpad-key:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.cc-dialpad-key:active {
+    transform: scale(0.95);
+    background: rgba(212, 175, 55, 0.2);
+}
+
+.cc-dial-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.cc-dial-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cc-dial-btn-call {
+    background: linear-gradient(135deg, #00D084, #059669);
+    color: #fff;
+}
+
+.cc-dial-btn-call:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 208, 132, 0.3); }
+
+.cc-dial-btn-clear {
+    background: rgba(255, 255, 255, 0.05);
+    color: #A0A0B0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cc-dial-btn-clear:hover {
+    background: rgba(212, 175, 55, 0.08);
+    color: #D4AF37;
+    border-color: rgba(212, 175, 55, 0.25);
+}
+
+/* 通话状态面板 */
+.cc-call-status-panel {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.cc-call-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.cc-call-name {
+    font-size: 12px;
+    color: #A0A0B0;
+    margin-bottom: 12px;
+}
+
+.cc-call-timer {
+    font-size: 24px;
+    font-weight: 700;
+    color: #D4AF37;
+    margin: 12px 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.cc-call-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.cc-call-ctrl {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.cc-call-ctrl-mute { background: rgba(255,255,255,0.08); color: #fff; }
+.cc-call-ctrl-mute.active { background: rgba(212,175,55,0.2); color: #D4AF37; }
+.cc-call-ctrl-hold { background: rgba(212,175,55,0.15); color: #D4AF37; }
+.cc-call-ctrl-hold.active { background: #D4AF37; color: #000; }
+.cc-call-ctrl-transfer { background: rgba(91,141,239,0.15); color: #5B8DEF; }
+.cc-call-ctrl-transfer:hover { background: rgba(91,141,239,0.3); }
+.cc-call-ctrl-hangup { background: #FF4D4F; color: #fff; box-shadow: 0 4px 12px rgba(255,77,79,0.3); }
+.cc-call-ctrl-hangup:hover { background: #FF1A1A; transform: scale(1.1); }
+.cc-call-ctrl-answer { background: #00D084; color: #fff; box-shadow: 0 4px 12px rgba(0,208,132,0.3); }
+.cc-call-ctrl-answer:hover { background: #00B371; transform: scale(1.1); }
+
+/* 后处理标签 */
+.cc-aw-tag {
+    padding: 5px 10px;
+    font-size: 11px;
+    border-radius: 12px;
+    border: 1px solid rgba(212,175,55,0.2);
+    background: rgba(212,175,55,0.05);
+    color: #A0A0B0;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.cc-aw-tag:hover { color: #D4AF37; border-color: rgba(212,175,55,0.4); }
+.cc-aw-tag.active {
+    background: linear-gradient(135deg, #D4AF37, #B8860B);
+    color: #000;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+/* 来电弹屏 */
+.cc-popup-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 380px;
+    height: 100vh;
+    background: #12121A;
+    border-left: 1px solid rgba(212, 175, 55, 0.3);
+    z-index: 9997;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+.cc-popup-overlay.visible { transform: translateX(0); }
+
+.cc-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #1A1A24;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.cc-popup-title { font-size: 14px; font-weight: 600; color: #D4AF37; }
+
+.cc-popup-body { padding: 20px; }
+
+.cc-popup-section { margin-bottom: 20px; }
+
+.cc-popup-section-title {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    letter-spacing: 1px;
+}
+
+.cc-popup-phone {
+    font-size: 20px;
+    font-weight: 600;
+    color: #D4AF37;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+}
+
+.cc-popup-location { font-size: 12px; color: #A0A0B0; }
+
+.cc-popup-customer-info {
+    padding: 12px;
+    background: #0A0A0F;
+    border-radius: 8px;
+    border: 1px solid rgba(212,175,55,0.1);
+}
+
+.cc-popup-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 12px;
+}
+
+.cc-popup-info-label { color: #666; }
+.cc-popup-info-value { color: #fff; max-width: 60%; text-align: right; word-break: break-all; }
+
+.cc-popup-history-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.cc-popup-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.cc-popup-actions .cc-dial-btn { flex: 1 1 calc(50% - 4px); padding: 8px; font-size: 12px; }
+
+/* 快速拨号列表 */
+.cc-quick-dial {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(212,175,55,0.1);
+}
+
+.cc-quick-dial-title {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.cc-quick-dial-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cc-quick-dial-item:hover { background: rgba(212,175,55,0.05); }
+
+.cc-quick-dial-name { font-size: 12px; color: #fff; }
+.cc-quick-dial-number { font-size: 11px; color: #A0A0B0; font-variant-numeric: tabular-nums; }
